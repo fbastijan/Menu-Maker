@@ -29,7 +29,6 @@
         </div>
       </div>
     </nav>
-
     <BackgroundImages />
     <router-view></router-view>
   </div>
@@ -39,10 +38,12 @@
 import BackgroundImages from "@/components/BackgroundImages.vue";
 export default {
   name: "App",
-  components: {
-    BackgroundImages,
-  },
+  components: { BackgroundImages },
 };
 </script>
 
-<style></style>
+<style>
+#app {
+  height: 100vh;
+}
+</style>
