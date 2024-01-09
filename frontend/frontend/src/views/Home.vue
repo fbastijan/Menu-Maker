@@ -1,4 +1,3 @@
-<!-- Home.vue -->
 <template>
   <div>
     <div class="container">
@@ -16,7 +15,11 @@
                 culinary offerings in style.
               </p>
               <a href="#" class="btn custom-btn btn-primary btn-lg m-5"
-                >Get Started</a
+                ><router-link
+                  to="/menumaker"
+                  style="text-decoration: none; color: inherit"
+                  >Get Started</router-link
+                ></a
               >
             </div>
           </div>
@@ -35,10 +38,10 @@ export default {
 .custom-btn {
   font-size: 2rem; /* Custom button font size */
   background-color: brown;
+  border-color: brown;
 }
 .custom-card-title {
   font-size: 2.5rem;
   color: #007bff; /* Blue color for the title */
-  margin-bottom: 20px;
 }
 </style>

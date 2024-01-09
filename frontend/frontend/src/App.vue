@@ -16,8 +16,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link" href="#"
+              ><router-link to="/" style="text-decoration: none; color: inherit"
+                >Home</router-link
+              ></a
+            >
+            <a class="nav-link" href="#"
+              ><router-link
+                to="/menumaker"
+                style="text-decoration: none; color: inherit"
+                >Make your menu</router-link
+              ></a
+            >
             <a class="nav-link" href="#">Pricing</a>
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
           </div>
