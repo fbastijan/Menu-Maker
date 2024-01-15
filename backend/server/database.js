@@ -4,6 +4,9 @@ const uri =
   "mongodb+srv://user:user@cluster0.ndjalsu.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
+// db.js
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -21,16 +24,15 @@ async function connectToMongoDB() {
     console.log("Connection established successfully");
   } catch (e) {
     console.error("Error connecting to MongoDB:", e);
+    throw e; // Propagate the error to handle it where connectToMongoDB is called
   }
 
-  // Use the connection to access the database
-  if (conn) {
-    let db = conn.db("testDB");
-    module.exports = db;
-  } else {
-    console.error("Connection not established. Exiting...");
-  }
+  // Return the desired database object
+  return conn.db("test");
 }
 
-// Call the asynchronous function
-connectToMongoDB();
+// Export the client and connect function
+module.exports = {
+  client: client,
+  connectToMongoDB: connectToMongoDB,
+};
