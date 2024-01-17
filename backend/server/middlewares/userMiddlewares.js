@@ -9,12 +9,12 @@ function verifyToken(req, res, next) {
       .json({ message: "Access denied. Token not provided." });
   }
 
-  jwt.verify(token, secretKey, (err, decoded) => {
+  jwt.verify(token, "secret", (err, decoded) => {
     if (err) {
       return res.status(401).json({ message: "Invalid token." });
     }
 
-    req.userId = decoded.id; // Attach the user ID to the request object
+    req.userId = decoded._id; // Attach the user ID to the request object
     next();
   });
 }

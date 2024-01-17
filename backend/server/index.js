@@ -7,8 +7,11 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cors());
-const apiroutes = require("./routes/api/userRoutes");
-app.use("/api", apiroutes);
+const userRoutes = require("./routes/api/userRoutes");
+const menuRoutes = require("./routes/api/menuRoutes");
+app.use("/api", userRoutes);
+app.use("/api", menuRoutes);
+
 app.get("/", (req, res) => {
   res.send("Hello, Express.js!");
 });
