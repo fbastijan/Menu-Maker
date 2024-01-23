@@ -71,19 +71,17 @@ router.get("/menu/:userId", async (req, res) => {
   }
 });
 
-router.get("/menu/:userId/kategorija/:index", async (req, res) => {
+router.get("/menu/:userId", async (req, res) => {
   try {
     const db = await connectToMongoDB();
     const collection = db.collection("menu");
     try {
-      console.log(req.params.userId);
-      console.log(req.params.index);
-
+      let type = req.query.type;
       let result = await collection
         .find(
           {
             userId: req.params.userId,
-            "current.items.categoriesIndex": req.params.index,
+            "current.items.categoriesIndex": type,
           },
           { projection: { "current.items.$": 1 } }
         )
@@ -156,6 +154,7 @@ router.post("/menu/:id/item", verifyToken, async (req, res) => {
       });
     });
 });
+router.post("/menu/:id/backup", verifyToken, async (req, res) => {});
 //dodavanje na menu
 router.patch("/menu");
 module.exports = router;

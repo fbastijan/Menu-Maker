@@ -62,8 +62,8 @@ body {
 
 .background-image {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
   filter: grayscale(0.9);
   opacity: 0.3;

@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">Menu Maker</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -23,7 +23,7 @@
             >
             <a class="nav-link" href="#"
               ><router-link
-                to="/menumaker"
+                to="/menucreator"
                 style="text-decoration: none; color: inherit"
                 >Make your menu</router-link
               ></a
@@ -32,8 +32,20 @@
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
           </div>
           <div class="navbar-nav ms-auto">
-            <a class="nav-link active" aria-current="page" href="#">Prijava</a>
-            <a class="nav-link" href="#">Registracija</a>
+            <a class="nav-link active" aria-current="page" href="#"
+              ><router-link
+                to="/login"
+                style="text-decoration: none; color: inherit"
+                >Login</router-link
+              ></a
+            >
+            <a class="nav-link" href="#"
+              ><router-link
+                to="/register"
+                style="text-decoration: none; color: inherit"
+                >Register</router-link
+              ></a
+            >
             <a class="nav-link" href="#">Odjava</a>
           </div>
         </div>
