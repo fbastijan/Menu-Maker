@@ -5,6 +5,7 @@ import Home from "@/views/Home.vue";
 import MenuCreator from "@/views/MenuCreator.vue";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
+import MenuEditor from "@/views/MenuEditor.vue";
 
 // Define your routes
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
   { path: "/menucreator", component: MenuCreator },
   { path: "/register", component: Register },
   { path: "/login", component: Login },
+  {
+    path: "/menu/:MenuName/:id", // :id is the dynamic part
+
+    component: MenuEditor,
+  },
 
   // Add more routes as needed
 ];

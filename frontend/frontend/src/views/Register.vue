@@ -43,7 +43,7 @@
                     <input
                       type="password"
                       class="form-control"
-                      id="floatingPassword"
+                      id="floatingPassword2"
                       placeholder="Password"
                     />
                     <label for="floatingPassword">Confirm Password</label>

@@ -1,47 +1,55 @@
 <template>
-  <div class="menu-container" ref="menuContainer"></div>
+  <div class="menu-container" ref="menuContainer">
+    <div
+      v-for="(item, index) in gridItems"
+      :key="index"
+      class="background-image"
+      :style="{ top: item.top, left: item.left }"
+    ></div>
+  </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      gridItems: [],
+      windowHeight: window.innerHeight,
+    };
+  },
   mounted() {
     this.generateGrid(); // Generate grid on initial mount
-
-    // Listen for the window scroll event
-
-    window.addEventListener("load", this.handleLoad);
+    window.addEventListener("resize", this.handleResize);
+    window.addEventListener("scroll", this.handleScroll);
   },
-  updated() {},
   methods: {
     generateGrid() {
       const smallImagePath =
         "https://i.imgur.com/DFWAwnG_d.webp?maxwidth=760&fidelity=grand";
-      const numRows = Math.floor(document.body.scrollHeight / 100);
+      const numRows = Math.floor(window.innerHeight / 100);
       const numCols = Math.ceil(window.innerWidth / 100);
-      const menuContainer = this.$refs.menuContainer;
-
-      // Clear existing content
-      menuContainer.innerHTML = "";
+      const newGridItems = [];
 
       for (let i = 0; i < numRows; i++) {
         for (let j = 0; j < numCols; j++) {
-          const backgroundImage = document.createElement("img");
-          backgroundImage.className = "background-image";
-          backgroundImage.src = smallImagePath;
-          backgroundImage.style.top = `${i * 100}px`;
-          backgroundImage.style.left = `${j * 100}px`;
-          menuContainer.appendChild(backgroundImage);
+          newGridItems.push({
+            top: `${i * 100}px`,
+            left: `${j * 100}px`,
+            backgroundImage: smallImagePath, // Use the variable in the object
+          });
         }
       }
+
+      // Update the reactive data property
+      this.gridItems = newGridItems;
     },
 
-    handleLoad() {
-      this.generateGrid(); // Regenerate grid on scroll
+    handleResize() {
+      this.generateGrid();
     },
   },
   beforeUnmount() {
-    // Remove the scroll event listener to prevent memory leaks
-    window.removeEventListener("load", this.handleLoad);
+    window.removeEventListener("resize", this.handleResize);
   },
 };
 </script>
@@ -58,13 +66,15 @@ body {
   position: absolute;
   width: 100%;
   height: 90%;
+  overflow: hidden; /* Prevent items from overflowing */
 }
 
 .background-image {
   position: absolute;
   width: 50px;
   height: 50px;
-  object-fit: cover;
+  background-image: url("https://i.imgur.com/DFWAwnG_d.webp?maxwidth=760&fidelity=grand");
+  background-size: cover;
   filter: grayscale(0.9);
   opacity: 0.3;
   transform: rotate(45deg);
