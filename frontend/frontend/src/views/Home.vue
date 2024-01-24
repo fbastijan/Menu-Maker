@@ -31,6 +31,7 @@
 </template>
 
 <script>
+//aaaaaaaa
 export default {
   name: "Home_view",
 };

@@ -17,7 +17,21 @@
                 />
                 <label for="floatingInput">Your Menu Name</label>
               </div>
-
+              <VuePictureCropper
+                :boxStyle="{
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: '#f8f8f8',
+                  margin: 'auto',
+                }"
+                img="https://i.imgur.com/DFWAwnG_d.webp?maxwidth=760&fidelity=grand"
+                :options="{
+                  viewMode: 1,
+                  dragMode: 'crop',
+                  aspectRatio: 16 / 9,
+                }"
+                @ready="ready"
+              />
               <router-link
                 to="/menucreator"
                 style="text-decoration: none; color: inherit"
@@ -35,9 +49,12 @@
 </template>
 
 <script>
+import VuePictureCropper from "vue-picture-cropper";
 export default {
   name: "Menu_creator",
-
+  component: {
+    VuePictureCropper,
+  },
   methods: {},
   data() {
     return {
