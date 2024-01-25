@@ -14,6 +14,14 @@
               >
                 Dodaj Stavku
               </button>
+              <router-link to="/menu/arhiva">
+                <button
+                  type="button"
+                  class="btn btn-primary mb-3 my-button ms-2"
+                >
+                  Arhiva
+                </button>
+              </router-link>
               <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="headingOne">
@@ -86,12 +94,22 @@
                   </div>
                 </div>
               </div>
+              <div class="text-center" ref="pdf">
+                <QRCodeVue3
+                  :value="getUrlQR()"
+                  downloadButton="btn btn-primary mb-3"
+                  :downloadOptions="{ name: 'vqr', extension: 'png' }"
+                  :download="true"
+                  :width="200"
+                  :height="200"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Modal -->
+    <!-- Modal Dodaj Stavku  -->
     <div
       class="modal fade"
       id="exampleModal"
@@ -124,7 +142,7 @@
               />
             </div>
             <div class="mb-3">
-              <label class="form-label">Opis</label>
+              <label class="form-label">Opis/količina</label>
               <textarea
                 class="form-control"
                 rows="3"
@@ -198,20 +216,29 @@
 <script>
 //aaaaaaaa
 import StavkeMenu from "@/components/StavkeMenu.vue";
+import { items, kategorije } from "@/store";
+import QRCodeVue3 from "qrcode-vue3";
+
 export default {
   name: "editor_view",
   components: {
     StavkeMenu,
+    QRCodeVue3,
   },
   mounted() {
     this.sortItems();
   },
+
   methods: {
+    getUrlQR() {
+      return window.location.href + "/guest";
+    },
     saveItem() {
       this.items.push(this.modal_object);
       this.modal_object = {};
       this.sortItems();
     },
+
     sortItems() {
       this.items.sort((a, b) => {
         const A = a.subtype.toUpperCase(); // ignore upper and lowercase
@@ -228,97 +255,33 @@ export default {
       });
     },
   },
+
   data() {
     return {
+      items,
       tip: "",
       modal_object: {},
-      kategorije: {
-        pice: [
-          "Alkoholna pića",
-          "Bezalkoholna pića",
-          "Gazirana Bezalkoholna pića",
-          "Kava",
-        ],
-        hrana: ["Predjelo", "Glavno jelo", "Desert"],
-        ostalo: [],
-      },
-      items: [
-        {
-          naziv: "Pizza Margherita",
-          opis: "Rajčice, Sir, tijesto",
-          type: "hrana",
-          subtype: "Glavno jelo",
-          cijena: 40,
-        },
-        {
-          naziv: "Spaghetti Bolognese",
-          opis: "Meso, Umak od rajčice, Tjestenina",
-          type: "hrana",
-          subtype: "Glavno jelo",
-          cijena: 35,
-        },
-        {
-          naziv: "Chicken Caesar Salad",
-          opis: "Pileće meso, Zelena salata, Caesar umak",
-          type: "hrana",
-          subtype: "Predjelo",
-          cijena: 28,
-        },
-        {
-          naziv: "Margarita Cocktail",
-          opis: "Tekila, Likor od naranče, Sok od limete",
-          type: "pice",
-          subtype: "Alkoholna pića",
-          cijena: 12,
-        },
-        {
-          naziv: "Cheeseburger",
-          opis: "Meso, Sir, Pecivo, Umak",
-          type: "hrana",
-          subtype: "Glavno Jelo",
-          cijena: 45,
-        },
-        {
-          naziv: "Pizza Margherita",
-          opis: "Rajčice, Sir, tijesto",
-          type: "hrana",
-          subtype: "Glavno jelo",
-          cijena: 40,
-        },
-        {
-          naziv: "Spaghetti Bolognese",
-          opis: "Meso, Umak od rajčice, Tjestenina",
-          type: "hrana",
-          subtype: "Glavno jelo",
-          cijena: 35,
-        },
-        {
-          naziv: "Chicken Caesar Salad",
-          opis: "Pileće meso, Zelena salata, Caesar umak",
-          type: "hrana",
-          subtype: "Predjelo",
-          cijena: 28,
-        },
-        {
-          naziv: "Margarita Cocktail",
-          opis: "Tekila, Likor od naranče, Sok od limete",
-          type: "pice",
-          subtype: "Alkoholna pića",
-          cijena: 12,
-        },
-        {
-          naziv: "Cheeseburger",
-          opis: "Meso, Sir, Pecivo, Umak",
-          type: "hrana",
-          subtype: "Glavno Jelo",
-          cijena: 45,
-        },
-      ],
+      kategorije,
+      imageData: null,
+      newData: "",
+      QrURL: "",
     };
   },
 };
 </script>
 <style>
+.btn-primary {
+  background-color: brown !important;
+  border-color: brown !important;
+}
+.btn-primary:hover {
+  background-color: brown !important;
+  border-color: brown !important;
+}
+.btn-primary:active {
+  background-color: brown !important;
+  border-color: brown !important;
+}
 .custom-btn {
   font-size: 2rem; /* Custom button font size */
   background-color: brown !important;
@@ -337,7 +300,7 @@ export default {
 .accordion-body {
   max-height: 40vh;
   margin-bottom: 10px;
-  overflow: scroll;
+  overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
 </style>

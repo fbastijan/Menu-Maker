@@ -6,6 +6,9 @@ import MenuCreator from "@/views/MenuCreator.vue";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
 import MenuEditor from "@/views/MenuEditor.vue";
+import GostMenuView from "@/views/GostMenuView";
+import ArhivaView from "@/views/ArhivaView";
+import ArhiviraniMenu from "@/views/ArhiviraniMenu";
 
 // Define your routes
 const routes = [
@@ -18,7 +21,21 @@ const routes = [
 
     component: MenuEditor,
   },
+  {
+    path: "/menu/arhiva", // :id is the dynamic part
 
+    component: ArhivaView,
+  },
+  {
+    path: "/menu/arhiva/:id", // :id is the dynamic part
+
+    component: ArhiviraniMenu,
+  },
+  {
+    path: "/menu/:MenuName/:id/guest", // :id is the dynamic part
+
+    component: GostMenuView,
+  },
   // Add more routes as needed
 ];
 

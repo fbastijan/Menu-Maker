@@ -9,8 +9,12 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "html2canvas": "^1.4.1",
+    "jquery": "^3.7.1",
+    "qrcode-vue3": "^1.6.8",
     "vue": "^3.2.13",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue3-html2pdf": "^1.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

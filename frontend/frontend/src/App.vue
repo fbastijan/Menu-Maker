@@ -28,8 +28,6 @@
                 >Make your menu</router-link
               ></a
             >
-            <a class="nav-link" href="#">Pricing</a>
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
           </div>
           <div class="navbar-nav ms-auto">
             <a class="nav-link active" aria-current="page" href="#"
@@ -58,6 +56,7 @@
 
 <script>
 import BackgroundImages from "@/components/BackgroundImages.vue";
+
 export default {
   name: "App",
   components: { BackgroundImages },
