@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { client, connectToMongoDB } = require("../../database");
 const { verifyToken } = require("../../middlewares/userMiddlewares");
+const { ObjectId } = require("mongodb");
 
 /*
 let menu = {
@@ -17,6 +18,7 @@ let menu_item = {
     name: "",
     price: 0.0,
     type: "",
+    subtype:""
     description:""
 }
 */
@@ -133,14 +135,15 @@ router.post("/menu", verifyToken, async (req, res) => {
     });
   }
 });
-router.post("/menu/:id/item", verifyToken, async (req, res) => {
+router.post("/menu/:menuId/item", verifyToken, async (req, res) => {
   const db = await connectToMongoDB();
   const collection = db.collection("menuItems");
-  let pom = req.body.items.forEach((element) => {
-    element.menuId = req.params.id;
+  req.body.forEach((element) => {
+    element.menuId = req.params.menuId;
   });
+  console.log(req.body);
   collection
-    .insertMany(pom)
+    .insertMany(req.body)
     .then((pom) => {
       return res.status(201).json({
         success: "true",
@@ -154,7 +157,30 @@ router.post("/menu/:id/item", verifyToken, async (req, res) => {
       });
     });
 });
-router.post("/menu/:id/backup", verifyToken, async (req, res) => {});
+router.post("/menu/:userId/backup", verifyToken, async (req, res) => {});
 //dodavanje na menu
-router.patch("/menu");
+router.patch("/menu/item/:itemId", verifyToken, async (req, res) => {
+  const { itemId } = req.params;
+  const updateData = req.body;
+  console.log(itemId);
+  try {
+    const db = await connectToMongoDB();
+    const collection = db.collection("menuItems");
+    const result = await collection.updateOne(
+      { _id: new ObjectId(itemId) },
+      { $set: updateData }
+    );
+    console.log(result);
+    return res.status(201).json({
+      success: "true",
+      msg: "Updateao si item na menu",
+      rez: result,
+    });
+  } catch {
+    return res.status(500).json({
+      success: "false",
+      msg: "Dogodila se greška pri updateanju",
+    });
+  }
+});
 module.exports = router;

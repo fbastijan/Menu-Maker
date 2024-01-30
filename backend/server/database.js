@@ -25,6 +25,9 @@ async function connectToMongoDB() {
   } catch (e) {
     console.error("Error connecting to MongoDB:", e);
     throw e; // Propagate the error to handle it where connectToMongoDB is called
+  } finally {
+    // Close the MongoDB connection when done
+    await client.close();
   }
 
   // Return the desired database object

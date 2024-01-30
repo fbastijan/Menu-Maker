@@ -161,7 +161,9 @@ export default {
       );
     },
     itemClicked: function (item) {
-      window.$("#my-modal").modal("show");
+      window.$(document).ready(function () {
+        window.$("#my-modal-item").modal("show");
+      });
       this.modal_object = item;
     },
   },

@@ -3,6 +3,7 @@ const router = express.Router();
 const { client, connectToMongoDB } = require("../../database");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { verifyToken } = require("../../middlewares/userMiddlewares");
 router.post("/register", async (req, res) => {
   let name = req.body.name;
   let password = req.body.password;
@@ -71,15 +72,15 @@ router.post("/register", async (req, res) => {
     });
   }
 });
-router.post("/login", async (req, res) => {
+router.get("/login", async (req, res) => {
   const db = await connectToMongoDB();
   const collection = db.collection("user");
-
-  collection.findOne({ username: req.body.username }).then((user) => {
+  const { username, password } = req.query;
+  collection.findOne({ username: username }).then((user) => {
     if (!user) {
       return res.status(404).json({ msg: "user not found", success: false });
     }
-    bcrypt.compare(req.body.password, user.password).then((isMatch) => {
+    bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
         //daj mu token
         const payload = {
@@ -108,9 +109,13 @@ router.delete("/logout", (req, res) => {
   console.log("Hello logout");
   res.send("hello logout");
 });
-router.get("/user", (req, res) => {
-  console.log("Hello User");
-  res.send("hello User");
+router.get("/user", verifyToken, (req, res) => {
+  const userId = req.userId;
+  res.status(200).json({
+    msg: "tvoj user",
+    success: true,
+    user: userId,
+  });
 });
 
 module.exports = router;
