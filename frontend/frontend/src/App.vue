@@ -29,22 +29,26 @@
               ></a
             >
           </div>
+
           <div class="navbar-nav ms-auto">
-            <a class="nav-link active" aria-current="page" href="#"
+            <a class="nav-link active" aria-current="page" href="#" v-if="!user"
               ><router-link
                 to="/login"
                 style="text-decoration: none; color: inherit"
                 >Login</router-link
               ></a
             >
-            <a class="nav-link" href="#"
+            <a class="nav-link" href="#" v-if="!user"
               ><router-link
                 to="/register"
                 style="text-decoration: none; color: inherit"
                 >Register</router-link
               ></a
             >
-            <a class="nav-link" href="#">Odjava</a>
+
+            <a class="nav-link" href="#" @click="odjava()" v-if="user"
+              >Odjava</a
+            >
           </div>
         </div>
       </div>
@@ -56,10 +60,34 @@
 
 <script>
 import BackgroundImages from "@/components/BackgroundImages.vue";
+import { auth } from "./Warehouse/auth";
 
 export default {
   name: "App",
   components: { BackgroundImages },
+  data() {
+    return {
+      user: "",
+    };
+  },
+
+  mounted() {
+    this.user = this.dohvati();
+  },
+  created() {
+    this.user = this.dohvati();
+  },
+  methods: {
+    odjava() {
+      auth.logout();
+      this.$router.push("/login");
+      this.user = "";
+    },
+    dohvati() {
+      return auth.getUser();
+    },
+  },
+  computed: {},
 };
 </script>
 

@@ -14,22 +14,25 @@
                     <input
                       type="username"
                       class="form-control"
-                      id="floatingInput"
                       placeholder="username"
+                      v-model="userCred.username"
                     />
-                    <label for="floatingInput">Username</label>
+                    <label>Username</label>
                   </div>
                   <div class="form-floating">
                     <input
                       type="password"
                       class="form-control"
-                      id="floatingPassword"
                       placeholder="Password"
+                      v-model="userCred.password"
                     />
-                    <label for="floatingPassword">Password</label>
+                    <label>Password</label>
                   </div>
 
-                  <a href="#" class="btn custom-btn-2 btn-primary btn-lg mt-5"
+                  <a
+                    href="#"
+                    class="btn custom-btn-2 btn-primary btn-lg mt-5"
+                    @click="login()"
                     >Login</a
                   >
                 </div>
@@ -46,8 +49,30 @@
   </div>
 </template>
 <script>
+import { auth } from "@/Warehouse/auth";
+import { userCred } from "@/store";
 export default {
   name: "LoginView",
+  data() {
+    return {
+      auth,
+      userCred,
+    };
+  },
+  methods: {
+    login() {
+      auth
+        .login(userCred.username, userCred.password)
+        .then((res) => {
+          console.log(res);
+          this.$router.push("/menucreator");
+        })
+        .catch((err) => {
+          console.log(err.response.data.msg);
+          alert(err.response.data.msg);
+        });
+    },
+  },
 };
 </script>
 <style scoped>

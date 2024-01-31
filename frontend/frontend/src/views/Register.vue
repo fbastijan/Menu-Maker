@@ -16,40 +16,43 @@
                     <input
                       type="email"
                       class="form-control"
-                      id="floatingInput"
                       placeholder="name@example.com"
+                      v-model="userCred.email"
                     />
-                    <label for="floatingInput">Email address</label>
+                    <label>Email address</label>
                   </div>
                   <div class="form-floating mb-3">
                     <input
                       type="username"
                       class="form-control"
-                      id="floatingInput"
                       placeholder="username"
+                      v-model="userCred.username"
                     />
-                    <label for="floatingInput">Username</label>
+                    <label>Username</label>
                   </div>
                   <div class="form-floating mb-3">
                     <input
                       type="password"
                       class="form-control"
-                      id="floatingPassword"
                       placeholder="Password"
+                      v-model="userCred.password"
                     />
-                    <label for="floatingPassword">Password</label>
+                    <label>Password</label>
                   </div>
                   <div class="form-floating">
                     <input
                       type="password"
                       class="form-control"
-                      id="floatingPassword2"
                       placeholder="Password"
+                      v-model="userCred.confirm_password"
                     />
-                    <label for="floatingPassword">Confirm Password</label>
+                    <label>Confirm Password</label>
                   </div>
 
-                  <a href="#" class="btn custom-btn-2 btn-primary btn-lg mt-5"
+                  <a
+                    href="#"
+                    class="btn custom-btn-2 btn-primary btn-lg mt-5"
+                    @click="register()"
                     >Register</a
                   >
                 </div>
@@ -66,8 +69,29 @@
   </div>
 </template>
 <script>
+import { userCred } from "@/store";
+import { auth } from "@/Warehouse/auth";
 export default {
   name: "RegisterView",
+  data() {
+    return {
+      userCred,
+      auth,
+    };
+  },
+  methods: {
+    register() {
+      auth
+        .signup(userCred)
+        .then((res) => {
+          console.log(res);
+          //this.$router.push("/login");
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+  },
 };
 </script>
 <style scoped>

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-
+import { auth } from "@/Warehouse/auth";
 // Import your components that will serve as pages
 import Home from "@/views/Home.vue";
 import MenuCreator from "@/views/MenuCreator.vue";
@@ -41,8 +41,23 @@ const routes = [
 
 // Create the router instance
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+router.beforeEach((to, from, next) => {
+  const javneStranice = ["/login", "/register", "/"];
+  const loginPotreban = !javneStranice.includes(to.path);
 
+  let user = auth.getUser();
+
+  if (loginPotreban && !user) {
+    next("/login");
+    return;
+  }
+  if (user && !loginPotreban) {
+    next("/menucreator");
+    return;
+  }
+  next();
+});
 export default router;

@@ -261,3 +261,11 @@ export let kategorije = {
   hrana: ["Predjelo", "Glavno jelo", "Desert"],
   ostalo: [],
 };
+export let userCred = {
+  username: "",
+  email: "",
+  password: "",
+  confirm_password: "",
+};
+
+export let User = "";
