@@ -31,14 +31,18 @@
           </div>
 
           <div class="navbar-nav ms-auto">
-            <a class="nav-link active" aria-current="page" href="#" v-if="!user"
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="#"
+              v-if="!Lauth.authenticated"
               ><router-link
                 to="/login"
                 style="text-decoration: none; color: inherit"
                 >Login</router-link
               ></a
             >
-            <a class="nav-link" href="#" v-if="!user"
+            <a class="nav-link" href="#" v-if="!Lauth.authenticated"
               ><router-link
                 to="/register"
                 style="text-decoration: none; color: inherit"
@@ -46,7 +50,11 @@
               ></a
             >
 
-            <a class="nav-link" href="#" @click="odjava()" v-if="user"
+            <a
+              class="nav-link"
+              href="#"
+              @click="odjava()"
+              v-if="Lauth.authenticated"
               >Odjava</a
             >
           </div>
@@ -65,34 +73,22 @@ import { auth } from "./Warehouse/auth";
 export default {
   name: "App",
   components: { BackgroundImages },
+
   data() {
     return {
-      user: "",
+      lokUser: "",
+      Lauth: auth.state,
     };
   },
 
-  mounted() {
-    this.user = this.dohvati();
-  },
-  created() {
-    this.user = this.dohvati();
-  },
   methods: {
     odjava() {
       auth.logout();
       this.$router.push("/login");
-      this.user = "";
-    },
-    dohvati() {
-      return auth.getUser();
+      location.reload();
     },
   },
-  computed: {},
 };
 </script>
 
-<style>
-#app {
-  height: 100vh;
-}
-</style>
+<style></style>

@@ -33,6 +33,17 @@ const auth = {
   getUser() {
     return localStorage.getItem("token");
   },
+  authenticated() {
+    let user = auth.getUser();
+    if (user) {
+      return true;
+    } else return false;
+  },
+  state: {
+    get authenticated() {
+      return auth.authenticated();
+    },
+  },
 };
 
 export { Service, auth };

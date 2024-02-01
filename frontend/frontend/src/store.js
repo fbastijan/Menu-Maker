@@ -269,3 +269,11 @@ export let userCred = {
 };
 
 export let User = "";
+
+export function changeUser(value) {
+  User = value;
+}
+
+export function getUser() {
+  return User;
+}
