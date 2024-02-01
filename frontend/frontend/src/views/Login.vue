@@ -68,7 +68,6 @@ export default {
         .login(userCred.username, userCred.password)
         .then(() => {
           this.$router.push("/menucreator");
-          flag.change();
         })
         .catch((err) => {
           console.log(err.response.data.msg);

@@ -35,14 +35,14 @@
               class="nav-link active"
               aria-current="page"
               href="#"
-              v-if="!flag.zast"
+              v-if="!authenticated.zast"
               ><router-link
                 to="/login"
                 style="text-decoration: none; color: inherit"
                 >Login</router-link
               ></a
             >
-            <a class="nav-link" href="#" v-if="!flag.zast"
+            <a class="nav-link" href="#" v-if="!authenticated.zast"
               ><router-link
                 to="/register"
                 style="text-decoration: none; color: inherit"
@@ -50,7 +50,11 @@
               ></a
             >
 
-            <a class="nav-link" href="#" @click="odjava()" v-if="flag.zast"
+            <a
+              class="nav-link"
+              href="#"
+              @click="odjava()"
+              v-if="authenticated.zast"
               >Odjava</a
             >
           </div>
@@ -73,8 +77,7 @@ export default {
   data() {
     return {
       lokUser: "",
-      Lauth: auth.state,
-      flag,
+      authenticated: flag,
     };
   },
 
@@ -82,7 +85,6 @@ export default {
     odjava() {
       auth.logout();
       this.$router.push("/login");
-      flag.change();
     },
   },
 };

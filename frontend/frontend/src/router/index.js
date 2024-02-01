@@ -9,7 +9,7 @@ import MenuEditor from "@/views/MenuEditor.vue";
 import GostMenuView from "@/views/GostMenuView";
 import ArhivaView from "@/views/ArhivaView";
 import ArhiviraniMenu from "@/views/ArhiviraniMenu";
-
+import { flag } from "@/store";
 // Define your routes
 const routes = [
   { path: "/", component: Home },
@@ -49,7 +49,7 @@ router.beforeEach((to, from, next) => {
   const loginPotreban = !javneStranice.includes(to.path);
 
   let user = auth.getUser();
-
+  flag.change();
   if (loginPotreban && !user) {
     next("/login");
     return;
