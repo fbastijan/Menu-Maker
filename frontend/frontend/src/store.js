@@ -1,3 +1,4 @@
+import { auth } from "./Warehouse/auth";
 export let items = [
   {
     id: 1,
@@ -267,13 +268,11 @@ export let userCred = {
   password: "",
   confirm_password: "",
 };
+import { reactive } from "vue";
 
-export let User = "";
-
-export function changeUser(value) {
-  User = value;
-}
-
-export function getUser() {
-  return User;
-}
+export const flag = reactive({
+  zast: "",
+  change() {
+    this.zast = auth.getUser();
+  },
+});

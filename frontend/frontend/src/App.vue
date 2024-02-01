@@ -35,14 +35,14 @@
               class="nav-link active"
               aria-current="page"
               href="#"
-              v-if="!Lauth.authenticated"
+              v-if="!flag.zast"
               ><router-link
                 to="/login"
                 style="text-decoration: none; color: inherit"
                 >Login</router-link
               ></a
             >
-            <a class="nav-link" href="#" v-if="!Lauth.authenticated"
+            <a class="nav-link" href="#" v-if="!flag.zast"
               ><router-link
                 to="/register"
                 style="text-decoration: none; color: inherit"
@@ -50,11 +50,7 @@
               ></a
             >
 
-            <a
-              class="nav-link"
-              href="#"
-              @click="odjava()"
-              v-if="Lauth.authenticated"
+            <a class="nav-link" href="#" @click="odjava()" v-if="flag.zast"
               >Odjava</a
             >
           </div>
@@ -69,7 +65,7 @@
 <script>
 import BackgroundImages from "@/components/BackgroundImages.vue";
 import { auth } from "./Warehouse/auth";
-
+import { flag } from "@/store";
 export default {
   name: "App",
   components: { BackgroundImages },
@@ -78,6 +74,7 @@ export default {
     return {
       lokUser: "",
       Lauth: auth.state,
+      flag,
     };
   },
 
@@ -85,7 +82,7 @@ export default {
     odjava() {
       auth.logout();
       this.$router.push("/login");
-      location.reload();
+      flag.change();
     },
   },
 };

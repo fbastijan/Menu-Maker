@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { reactive } from "vue";
 let Service = axios.create({
   baseURL: "http://localhost:3000/",
   timeout: 10000000,
@@ -39,11 +39,15 @@ const auth = {
       return true;
     } else return false;
   },
-  state: {
+
+  state: reactive({
     get authenticated() {
-      return auth.authenticated();
+      let user = auth.getUser();
+      if (user) {
+        return true;
+      } else return false;
     },
-  },
+  }),
 };
 
 export { Service, auth };

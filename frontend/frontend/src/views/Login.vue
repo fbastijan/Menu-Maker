@@ -51,6 +51,7 @@
 <script>
 import { auth } from "@/Warehouse/auth";
 import { userCred } from "@/store";
+import { flag } from "@/store";
 
 export default {
   name: "LoginView",
@@ -58,6 +59,7 @@ export default {
     return {
       auth,
       userCred,
+      flag,
     };
   },
   methods: {
@@ -66,7 +68,7 @@ export default {
         .login(userCred.username, userCred.password)
         .then(() => {
           this.$router.push("/menucreator");
-          location.reload();
+          flag.change();
         })
         .catch((err) => {
           console.log(err.response.data.msg);
