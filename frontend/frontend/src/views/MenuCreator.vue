@@ -14,6 +14,7 @@
                   class="form-control"
                   id="floatingInput"
                   placeholder="name"
+                  v-model="menu.name"
                 />
                 <label for="floatingInput">Your Menu Name</label>
               </div>
@@ -126,14 +127,13 @@ Desert</textarea
                   </div>
                 </div>
               </div>
-              <router-link
-                to="/menu/dobarBarPula/1"
-                style="text-decoration: none; color: inherit"
+
+              <a
+                href="#"
+                class="btn custom-btn btn-primary btn-lg m-5"
+                @click="finalize()"
+                >Započni Menu!</a
               >
-                <a href="#" class="btn custom-btn btn-primary btn-lg m-5"
-                  >Započni Menu!</a
-                >
-              </router-link>
             </div>
           </div>
         </div>
@@ -143,6 +143,7 @@ Desert</textarea
 </template>
 
 <script>
+import { menuHandlers } from "@/Warehouse/menu";
 export default {
   name: "Menu_creator",
 
@@ -152,9 +153,31 @@ export default {
         this.kategorije[kat] = this.kategorije[kat] + "\n" + gumb;
       else this.kategorije[kat] = gumb;
     },
+    async finalize() {
+      this.menu.kategorije.pice = this.kategorije.pice.trim()
+        ? this.kategorije.pice.split("\n")
+        : [];
+      this.menu.kategorije.hrana = this.kategorije.hrana.trim()
+        ? this.kategorije.hrana.split("\n")
+        : [];
+      this.menu.kategorije.ostalo = this.kategorije.ostalo.trim()
+        ? this.kategorije.ostalo.split("\n")
+        : [];
+      let res = await menuHandlers.setMenu(this.menu);
+
+      console.log(res.data);
+    },
   },
   data() {
     return {
+      menu: {
+        name: "",
+        kategorije: {
+          pice: [],
+          hrana: [],
+          ostalo: [],
+        },
+      },
       kategorije: {
         pice: "Alkoholna pića\nBezalkoholna pića\nGazirana Bezalkoholna pića\nKava",
         hrana: "Predjelo\nGlavno jelo\nDesert",
