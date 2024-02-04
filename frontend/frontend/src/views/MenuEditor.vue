@@ -14,6 +14,13 @@
               >
                 Dodaj Stavku
               </button>
+              <button
+                type="button"
+                class="btn btn-primary mb-3"
+                @click="finializeMenu()"
+              >
+                Finaliziraj
+              </button>
               <router-link to="/menu/arhiva">
                 <button
                   type="button"
@@ -196,6 +203,14 @@
                 v-model="modal_object.cijena"
               />
             </div>
+            <button
+              type="button"
+              class="btn btn-primary mb-3"
+              @click="saveItem()"
+            >
+              Dodaj
+            </button>
+            <StavkeMenu :info="this.pending" :additional="'all'" />
           </div>
           <div class="modal-footer">
             <button
@@ -218,7 +233,7 @@
 import StavkeMenu from "@/components/StavkeMenu.vue";
 import { items, kategorije } from "@/store";
 import QRCodeVue3 from "qrcode-vue3";
-
+import { menuHandlers } from "@/Warehouse/menu";
 export default {
   name: "editor_view",
   components: {
@@ -234,9 +249,19 @@ export default {
       return window.location.href + "/guest";
     },
     saveItem() {
-      this.items.push(this.modal_object);
+      this.pending.push(this.modal_object);
+      console.log(JSON.stringify(this.pending));
       this.modal_object = {};
       this.sortItems();
+    },
+
+    finializeMenu() {
+      try {
+        let res = menuHandlers.setMenuItem(this.menuId, this.items);
+        console.log(res.data);
+      } catch (e) {
+        console.log(e);
+      }
     },
 
     sortItems() {
@@ -259,12 +284,14 @@ export default {
   data() {
     return {
       items,
+      pending: [],
       tip: "",
       modal_object: {},
       kategorije,
       imageData: null,
       newData: "",
       QrURL: "",
+      menuId: this.$route.params.id,
     };
   },
 };

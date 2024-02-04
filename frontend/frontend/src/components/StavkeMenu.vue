@@ -2,14 +2,21 @@
   <div>
     <ul class="list-group">
       <div v-for="(item, index) in this.info" :key="index">
-        <li class="list-group-item" v-if="this.additional == item.type">
+        <li
+          class="list-group-item"
+          v-if="this.additional == item.type || this.additional == 'all'"
+        >
           <div class="row d-flex">
             <div class="col">Naziv: {{ item.naziv }}</div>
             <div class="col">Opis: {{ item.opis }}</div>
             <div class="col">Tip: {{ item.subtype }}</div>
             <div class="col">Cijena: {{ item.cijena }}Eura</div>
             <div class="col-1">
-              <a class="btn btn-sm" @click="itemClicked(item)">
+              <a
+                class="btn btn-sm"
+                @click="itemClicked(item)"
+                v-if="this.additional != 'all'"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -25,7 +32,7 @@
               </a>
             </div>
             <div class="col-1">
-              <a class="btn btn-sm" @click="deleteItem(item.id)">
+              <a class="btn btn-sm" @click="deleteItem(item.naziv)">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -152,10 +159,10 @@ import { items, kategorije } from "@/store";
 export default {
   props: ["info", "additional"],
   methods: {
-    deleteItem(id) {
+    deleteItem(naziv) {
       this.items.splice(
         this.items.findIndex((el) => {
-          el.id == id;
+          el.naziv == naziv;
         }),
         1
       );

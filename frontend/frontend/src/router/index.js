@@ -17,7 +17,7 @@ const routes = [
   { path: "/register", component: Register },
   { path: "/login", component: Login },
   {
-    path: "/menu/:MenuName/:id", // :id is the dynamic part
+    path: "/menu/:id", // :id is the dynamic part
 
     component: MenuEditor,
   },

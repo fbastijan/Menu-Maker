@@ -165,7 +165,8 @@ export default {
         : [];
       let res = await menuHandlers.setMenu(this.menu);
 
-      console.log(res.data);
+      localStorage.setItem("menuId", res.data.id);
+      this.$router.push("/menu/" + res.data.id);
     },
   },
   data() {

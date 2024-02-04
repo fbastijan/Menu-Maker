@@ -117,10 +117,11 @@ router.post("/menu", verifyToken, async (req, res) => {
     const collection = db.collection("menu");
     collection
       .insertOne(newMenu)
-      .then((user) => {
+      .then((menu) => {
         return res.status(201).json({
           success: "true",
           msg: "Dodao si menu",
+          id: menu.insertedId,
         });
       })
       .catch((err) => {
@@ -135,15 +136,16 @@ router.post("/menu", verifyToken, async (req, res) => {
     });
   }
 });
-router.post("/menu/:menuId/item", verifyToken, async (req, res) => {
+router.post("/menu/item/:menuId", verifyToken, async (req, res) => {
   const db = await connectToMongoDB();
   const collection = db.collection("menuItems");
-  req.body.forEach((element) => {
+
+  req.body.menuItem.forEach((element) => {
     element.menuId = req.params.menuId;
   });
-  console.log(req.body);
+
   collection
-    .insertMany(req.body)
+    .insertMany(req.body.menuItem)
     .then((pom) => {
       return res.status(201).json({
         success: "true",

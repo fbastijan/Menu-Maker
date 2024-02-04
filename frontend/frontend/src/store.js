@@ -1,7 +1,6 @@
 import { auth } from "./Warehouse/auth";
 export let items = [
   {
-    id: 1,
     naziv: "Pizza Margherita",
     opis: "Rajčice, Sir, tijesto",
     type: "hrana",
@@ -9,7 +8,6 @@ export let items = [
     cijena: 40,
   },
   {
-    id: 2,
     naziv: "Spaghetti Bolognese",
     opis: "Meso, Umak od rajčice, Tjestenina",
     type: "hrana",
@@ -17,7 +15,6 @@ export let items = [
     cijena: 35,
   },
   {
-    id: 3,
     naziv: "Chicken Caesar Salad",
     opis: "Pileće meso, Zelena salata, Caesar umak",
     type: "hrana",
@@ -25,7 +22,6 @@ export let items = [
     cijena: 28,
   },
   {
-    id: 4,
     naziv: "Margarita Cocktail",
     opis: "0.33",
     type: "pice",
@@ -33,7 +29,6 @@ export let items = [
     cijena: 12,
   },
   {
-    id: 5,
     naziv: "Ginger Ale",
     opis: "Gazirani napitak s okusom đumbira",
     type: "pice",
@@ -41,7 +36,6 @@ export let items = [
     cijena: 5,
   },
   {
-    id: 6,
     naziv: "Espresso",
     opis: "Mala, jaka kava",
     type: "pice",
@@ -49,7 +43,6 @@ export let items = [
     cijena: 8,
   },
   {
-    id: 7,
     naziv: "Chocolate Cake",
     opis: "Čokoladna torta sa sočnim punjenjem",
     type: "hrana",
@@ -57,7 +50,6 @@ export let items = [
     cijena: 15,
   },
   {
-    id: 8,
     naziv: "Pepperoni Pizza",
     opis: "Pepperoni, Sir, tijesto",
     type: "hrana",
@@ -65,7 +57,6 @@ export let items = [
     cijena: 45,
   },
   {
-    id: 9,
     naziv: "Carbonara",
     opis: "Špek, Jaja, Parmezan, Tjestenina",
     type: "hrana",
@@ -73,7 +64,6 @@ export let items = [
     cijena: 38,
   },
   {
-    id: 10,
     naziv: "Caprese Salad",
     opis: "Mozzarella, Rajčice, Bosiljak",
     type: "hrana",
@@ -81,7 +71,6 @@ export let items = [
     cijena: 30,
   },
   {
-    id: 11,
     naziv: "Mai Tai",
     opis: "Rum, Triple sec, Limun, Sirup",
     type: "pice",
@@ -89,7 +78,6 @@ export let items = [
     cijena: 14,
   },
   {
-    id: 12,
     naziv: "Orange Juice",
     opis: "Svježe iscijeđeni sok od naranče",
     type: "pice",
@@ -97,7 +85,6 @@ export let items = [
     cijena: 6,
   },
   {
-    id: 13,
     naziv: "Cappuccino",
     opis: "Kava s mlijekom i pjenu",
     type: "pice",
@@ -105,7 +92,6 @@ export let items = [
     cijena: 9,
   },
   {
-    id: 14,
     naziv: "Cheesecake",
     opis: "Kolač od sira s voćnim preljevom",
     type: "hrana",
@@ -113,7 +99,6 @@ export let items = [
     cijena: 18,
   },
   {
-    id: 15,
     naziv: "Vegetarian Pizza",
     opis: "Razno povrće, Sir, tijesto",
     type: "hrana",
@@ -121,7 +106,6 @@ export let items = [
     cijena: 42,
   },
   {
-    id: 16,
     naziv: "Lobster Pasta",
     opis: "Jastog, Bijeli umak, Tjestenina",
     type: "hrana",
@@ -129,7 +113,6 @@ export let items = [
     cijena: 60,
   },
   {
-    id: 17,
     naziv: "Bruschetta",
     opis: "Paradajz, Bosiljak, Maslinovo ulje",
     type: "hrana",
@@ -137,7 +120,6 @@ export let items = [
     cijena: 25,
   },
   {
-    id: 18,
     naziv: "Mojito",
     opis: "Bijeli rum, Šećer, Menta, Soda",
     type: "pice",
@@ -145,7 +127,6 @@ export let items = [
     cijena: 16,
   },
   {
-    id: 19,
     naziv: "Iced Tea",
     opis: "Ledena čajna mješavina",
     type: "pice",
@@ -153,7 +134,6 @@ export let items = [
     cijena: 4,
   },
   {
-    id: 20,
     naziv: "Macchiato",
     opis: "Kava s kapljicom mlijeka",
     type: "pice",
@@ -161,7 +141,6 @@ export let items = [
     cijena: 7,
   },
   {
-    id: 21,
     naziv: "Tiramisu",
     opis: "Klasični talijanski desert s kavom",
     type: "hrana",

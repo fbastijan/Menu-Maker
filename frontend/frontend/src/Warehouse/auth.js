@@ -33,6 +33,7 @@ const auth = {
   getUser() {
     return localStorage.getItem("token");
   },
+
   authenticated() {
     let user = auth.getUser();
     if (user) {
