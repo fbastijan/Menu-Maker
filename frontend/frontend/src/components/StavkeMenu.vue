@@ -2,21 +2,14 @@
   <div>
     <ul class="list-group">
       <div v-for="(item, index) in this.info" :key="index">
-        <li
-          class="list-group-item"
-          v-if="this.additional == item.type || this.additional == 'all'"
-        >
+        <li class="list-group-item" v-if="this.additional == item.type">
           <div class="row d-flex">
             <div class="col">Naziv: {{ item.naziv }}</div>
             <div class="col">Opis: {{ item.opis }}</div>
             <div class="col">Tip: {{ item.subtype }}</div>
             <div class="col">Cijena: {{ item.cijena }}Eura</div>
             <div class="col-1">
-              <a
-                class="btn btn-sm"
-                @click="itemClicked(item)"
-                v-if="this.additional != 'all'"
-              >
+              <a class="btn btn-sm" @click="itemClicked(item)">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -32,7 +25,7 @@
               </a>
             </div>
             <div class="col-1">
-              <a class="btn btn-sm" @click="deleteItem(item.naziv)">
+              <a class="btn btn-sm" @click="deleteItem(item._id)">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -156,16 +149,19 @@
 
 <script>
 import { items, kategorije } from "@/store";
+import { menuHandlers } from "@/Warehouse/menu";
 export default {
   props: ["info", "additional"],
   methods: {
-    deleteItem(naziv) {
+    async deleteItem(id) {
+      console.log(JSON.stringify(this.items));
       this.items.splice(
         this.items.findIndex((el) => {
-          el.naziv == naziv;
+          el._id == id;
         }),
         1
       );
+      await menuHandlers.deleteItem(id);
     },
     itemClicked: function (item) {
       window.$(document).ready(function () {

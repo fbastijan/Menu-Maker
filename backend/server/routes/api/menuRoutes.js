@@ -72,21 +72,47 @@ router.get("/menu/:userId", async (req, res) => {
     });
   }
 });
-
-router.get("/menu/:userId", async (req, res) => {
+router.delete("/menu/item/:itemId", verifyToken, async (req, res) => {
   try {
     const db = await connectToMongoDB();
-    const collection = db.collection("menu");
+    const collection = db.collection("menuItems");
     try {
-      let type = req.query.type;
+      console.log("aaaaa");
+      let result = await collection.deleteOne({
+        _id: new ObjectId(req.params.itemId),
+      });
+      res.status(200).json({
+        success: "true",
+        msg: "uspješno si obrisao menu",
+        menu: result,
+      });
+      return res;
+    } catch (e) {
+      res.status(504).json({
+        success: "false",
+        msg: "greška pri brisanju",
+        a: result,
+      });
+      return res;
+    }
+  } catch (e) {
+    res.status(500).json({
+      success: "false",
+      msg: e,
+    });
+    return res;
+  }
+});
+
+router.get("/menu/item/:menuId", async (req, res) => {
+  try {
+    const db = await connectToMongoDB();
+    const collection = db.collection("menuItems");
+    try {
       let result = await collection
-        .find(
-          {
-            userId: req.params.userId,
-            "current.items.categoriesIndex": type,
-          },
-          { projection: { "current.items.$": 1 } }
-        )
+        .find({
+          menuId: req.params.menuId,
+        })
         .toArray();
       res.status(200).json({
         success: "true",
@@ -112,6 +138,12 @@ router.post("/menu", verifyToken, async (req, res) => {
     userId: req.userId,
     ...req.body,
   };
+
+  const result = await collection.findOne({ userId: req.userId });
+  if (res) {
+    return result._id;
+  }
+
   try {
     const db = await connectToMongoDB();
     const collection = db.collection("menu");

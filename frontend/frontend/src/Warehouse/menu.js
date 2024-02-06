@@ -26,6 +26,19 @@ const menuHandlers = {
     );
     return response;
   },
+  async getMenuItems(menuId) {
+    let response = await Service.get(`/api/menu/item/${menuId}`);
+    return response;
+  },
+  async deleteItem(itemId) {
+    const config = {
+      headers: {
+        Authorization: splitHeader(),
+      },
+    };
+    let response = await Service.delete(`/api/menu/item/${itemId}`, config);
+    return response;
+  },
 };
 export { menuHandlers };
 

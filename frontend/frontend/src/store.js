@@ -1,6 +1,6 @@
 import { auth } from "./Warehouse/auth";
 export let items = [
-  {
+  /*   {
     naziv: "Pizza Margherita",
     opis: "Rajčice, Sir, tijesto",
     type: "hrana",
@@ -146,7 +146,7 @@ export let items = [
     type: "hrana",
     subtype: "Desert",
     cijena: 20,
-  },
+  }, */
 ];
 
 export let arhivirani = [

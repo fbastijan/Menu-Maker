@@ -14,13 +14,7 @@
               >
                 Dodaj Stavku
               </button>
-              <button
-                type="button"
-                class="btn btn-primary mb-3"
-                @click="finializeMenu()"
-              >
-                Finaliziraj
-              </button>
+
               <router-link to="/menu/arhiva">
                 <button
                   type="button"
@@ -203,6 +197,18 @@
                 v-model="modal_object.cijena"
               />
             </div>
+
+            <div class="mb-3">
+              <label class="form-label">Pending items</label>
+              <textarea
+                class="form-control"
+                rows="3"
+                v-model="pending"
+                placeholder="format: #Naziv&Opis&Type&Subtype&CijenaUEur"
+              >
+              </textarea>
+            </div>
+
             <button
               type="button"
               class="btn btn-primary mb-3"
@@ -210,14 +216,13 @@
             >
               Dodaj
             </button>
-            <StavkeMenu :info="this.pending" :additional="'all'" />
           </div>
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-primary"
               data-bs-dismiss="modal"
-              @click="saveItem"
+              @click="finializeMenu()"
             >
               Save changes
             </button>
@@ -241,6 +246,7 @@ export default {
     QRCodeVue3,
   },
   mounted() {
+    this.getMenuItems();
     this.sortItems();
   },
 
@@ -248,19 +254,59 @@ export default {
     getUrlQR() {
       return window.location.href + "/guest";
     },
+
+    async getMenuItems() {
+      let res = await menuHandlers.getMenuItems(this.menuId);
+      this.items = res.data.menu;
+    },
     saveItem() {
-      this.pending.push(this.modal_object);
+      this.pending +=
+        this.modal_object.naziv +
+        "&" +
+        this.modal_object.opis +
+        "&" +
+        this.modal_object.type +
+        "&" +
+        this.modal_object.subtype +
+        "&" +
+        this.modal_object.cijena +
+        "\n";
       console.log(JSON.stringify(this.pending));
       this.modal_object = {};
       this.sortItems();
     },
 
-    finializeMenu() {
-      try {
-        let res = menuHandlers.setMenuItem(this.menuId, this.items);
-        console.log(res.data);
-      } catch (e) {
-        console.log(e);
+    async finializeMenu() {
+      const rows = this.pending.split("\n");
+
+      // Creating objects from each row
+      let arrPending = [];
+      rows.forEach((row) => {
+        const attributes = row.split("&");
+
+        if (attributes.length != 5) {
+          return true;
+        }
+        const obj = {
+          naziv: attributes[0],
+          opis: attributes[1],
+          type: attributes[2],
+          subtype: attributes[3],
+          cijena: attributes[4],
+        };
+
+        arrPending.push(obj);
+      });
+
+      if (arrPending.length != 0) {
+        try {
+          let res = await menuHandlers.setMenuItem(this.menuId, arrPending);
+          console.log(res.data);
+          this.pending = "";
+          this.getMenuItems();
+        } catch (e) {
+          console.log(e);
+        }
       }
     },
 
@@ -284,7 +330,7 @@ export default {
   data() {
     return {
       items,
-      pending: [],
+      pending: "",
       tip: "",
       modal_object: {},
       kategorije,
