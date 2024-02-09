@@ -46,16 +46,18 @@ const router = createRouter({
 });
 router.beforeEach((to, from, next) => {
   const javneStranice = ["/login", "/register"];
+  const introStranice = ["/", "/menucreator"];
+  const notIntro = !introStranice.includes(to.path);
   const loginPotreban = !javneStranice.includes(to.path);
-
   let user = auth.getUser();
+  let menu = localStorage.getItem("menuId");
   flag.change();
   if (loginPotreban && !user) {
     next("/login");
     return;
   }
-  if (user && !loginPotreban) {
-    next("/menucreator");
+  if (menu && to.path !== `/menu/${menu}` && user && !notIntro) {
+    next(`/menu/${menu}`);
     return;
   }
   next();

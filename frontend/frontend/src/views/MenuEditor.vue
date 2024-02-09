@@ -3,6 +3,7 @@
     <div class="container">
       <div class="row justify-content-center mt-5">
         <div class="col-9">
+          <MenuRevisor class="mb-3"></MenuRevisor>
           <div class="card custom-card shadow" style="border-radius: 25px">
             <div class="card-body">
               <h1 class="card-title text-center display-2">Dobar Bar Pula</h1>
@@ -239,11 +240,14 @@ import StavkeMenu from "@/components/StavkeMenu.vue";
 import { items, kategorije } from "@/store";
 import QRCodeVue3 from "qrcode-vue3";
 import { menuHandlers } from "@/Warehouse/menu";
+
+import MenuRevisor from "../components/menuRevisor.vue";
 export default {
   name: "editor_view",
   components: {
     StavkeMenu,
     QRCodeVue3,
+    MenuRevisor,
   },
   mounted() {
     this.getMenuItems();

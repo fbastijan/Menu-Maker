@@ -139,14 +139,13 @@ router.post("/menu", verifyToken, async (req, res) => {
     ...req.body,
   };
 
-  const result = await collection.findOne({ userId: req.userId });
-  if (res) {
-    return result._id;
-  }
-
   try {
     const db = await connectToMongoDB();
     const collection = db.collection("menu");
+    /*    const result = await collection.findOne({ userId: req.userId });
+    if (res) {
+      return result._id;
+    } */
     collection
       .insertOne(newMenu)
       .then((menu) => {

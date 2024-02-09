@@ -26,7 +26,9 @@ export default {
     generateGrid() {
       const smallImagePath =
         "https://i.imgur.com/DFWAwnG_d.webp?maxwidth=760&fidelity=grand";
-      const numRows = Math.floor(window.innerHeight / 100);
+
+      console.log();
+      const numRows = Math.floor(document.documentElement.scrollHeight / 100);
       const numCols = Math.ceil(window.innerWidth / 100);
       const newGridItems = [];
 
@@ -47,6 +49,9 @@ export default {
     handleResize() {
       this.generateGrid();
     },
+    handleScroll() {
+      this.generateGrid();
+    },
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.handleResize);
@@ -65,14 +70,12 @@ body {
 .menu-container {
   position: absolute;
   width: 100%;
-  height: 90%;
-  overflow: hidden; /* Prevent items from overflowing */
 }
 
 .background-image {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   background-image: url("https://i.imgur.com/DFWAwnG_d.webp?maxwidth=760&fidelity=grand");
   background-size: cover;
   filter: grayscale(0.9);
