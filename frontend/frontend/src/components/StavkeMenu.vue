@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ul class="list-group">
-      <div v-for="(item, index) in this.info" :key="index">
+    <div v-for="(item, index) in this.info" :key="index">
+      <ul class="list-group">
         <li class="list-group-item" v-if="this.additional == item.type">
           <div class="row d-flex">
             <div class="col">Naziv: {{ item.naziv }}</div>
@@ -9,7 +9,7 @@
             <div class="col">Tip: {{ item.subtype }}</div>
             <div class="col">Cijena: {{ item.cijena }}Eura</div>
             <div class="col-1">
-              <a class="btn btn-sm" @click="itemClicked(item)">
+              <a class="btn btn-sm" @click="itemClicked(item, index)">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -42,104 +42,104 @@
             </div>
           </div>
         </li>
-      </div>
-    </ul>
-    <div
-      class="modal fade"
-      id="my-modal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Dodaj stavku</h5>
+      </ul>
+      <div
+        class="modal fade"
+        :id="index + '-my-modal'"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Dodaj stavku</h5>
 
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Naziv</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                placeholder="npr.Pizza Margherita"
-                v-model="modal_object.naziv"
-              />
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Opis/količina</label>
-              <textarea
-                class="form-control"
-                rows="3"
-                v-model="modal_object.opis"
-              ></textarea>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Kategorija</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                v-model="modal_object.type"
-              >
-                <option value="pice">Piće</option>
-                <option value="hrana">Hrana</option>
-                <option value="ostalo">Ostalo</option>
-              </select>
-            </div>
-            <div
-              class="mb-3"
-              v-if="
-                modal_object.type &&
-                this.kategorije[this.modal_object.type].length > 0
-              "
-            >
-              <label class="form-label">Kategorija</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                v-model="modal_object.subtype"
-              >
-                <option
-                  :value="item"
-                  v-for="(item, index) in this.kategorije[
-                    this.modal_object.type
-                  ]"
-                  :key="index"
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label"
+                  >Naziv</label
                 >
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Cijena u Eurima</label
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="npr.Pizza Margherita"
+                  v-model="modal_object.naziv"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Opis/količina</label>
+                <textarea
+                  class="form-control"
+                  rows="3"
+                  v-model="modal_object.opis"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Kategorija</label>
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  v-model="modal_object.type"
+                >
+                  <option value="pice">Piće</option>
+                  <option value="hrana">Hrana</option>
+                  <option value="ostalo">Ostalo</option>
+                </select>
+              </div>
+              <div
+                class="mb-3"
+                v-if="
+                  modal_object.type &&
+                  this.kategorije[this.modal_object.type].length > 0
+                "
               >
-              <input
-                type="text"
-                class="form-control"
-                placeholder="npr 50"
-                v-model="modal_object.cijena"
-              />
+                <label class="form-label">Kategorija</label>
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  v-model="modal_object.subtype"
+                >
+                  <option
+                    :value="item"
+                    v-for="(item, index) in this.kategorije[
+                      this.modal_object.type
+                    ]"
+                    :key="index"
+                  >
+                    {{ item }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label"
+                  >Cijena u Eurima</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="npr 50"
+                  v-model="modal_object.cijena"
+                />
+              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-bs-dismiss="modal"
-              @click="saveItem"
-            >
-              Save changes
-            </button>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                @click="updateItem(modal_object._id, modal_object)"
+              >
+                Save changes
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -153,6 +153,11 @@ import { menuHandlers } from "@/Warehouse/menu";
 export default {
   props: ["info", "additional"],
   methods: {
+    async updateItem(itemId, change) {
+      delete change._id;
+      let res = await menuHandlers.updateMenuItem(itemId, change);
+      console.log(res);
+    },
     async deleteItem(id) {
       console.log(JSON.stringify(this.items));
       this.items.splice(
@@ -163,10 +168,9 @@ export default {
       );
       await menuHandlers.deleteItem(id);
     },
-    itemClicked: function (item) {
-      window.$(document).ready(function () {
-        window.$("#my-modal").modal("show");
-      });
+    itemClicked(item, index) {
+      window.$("#" + index + "-my-modal").modal("show");
+
       this.modal_object = item;
     },
   },

@@ -13,6 +13,10 @@ const menuHandlers = {
     let response = await Service.post("/api/menu", { menu }, config);
     return response;
   },
+  async getMenuItems(menuId) {
+    let response = await Service.get(`/api/menu/item/${menuId}`);
+    return response;
+  },
   async setMenuItem(menuId, menuItem) {
     const config = {
       headers: {
@@ -26,10 +30,21 @@ const menuHandlers = {
     );
     return response;
   },
-  async getMenuItems(menuId) {
-    let response = await Service.get(`/api/menu/item/${menuId}`);
+  async updateMenuItem(itemId, menuItemChanges) {
+    const config = {
+      headers: {
+        Authorization: splitHeader(),
+      },
+    };
+    console.log(menuItemChanges);
+    let response = await Service.patch(
+      `/api/menu/item/${itemId}`,
+      { ...menuItemChanges },
+      config
+    );
     return response;
   },
+
   async deleteItem(itemId) {
     const config = {
       headers: {
