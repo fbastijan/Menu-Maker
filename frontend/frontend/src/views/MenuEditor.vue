@@ -24,78 +24,37 @@
                   Arhiva
                 </button>
               </router-link>
-              <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingOne">
-                    <button
-                      class="accordion-button"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
-                      aria-expanded="true"
-                      aria-controls="collapseOne"
-                    >
-                      Hrana
-                    </button>
-                  </h2>
-                  <div
-                    id="collapseOne"
-                    class="accordion-collapse collapse show"
-                    aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample"
+              <div class="row mb-3">
+                <div class="col-2">
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    v-model="selectedOne"
                   >
-                    <div class="accordion-body">
-                      <StavkeMenu :info="this.items" :additional="'hrana'" />
-                    </div>
-                  </div>
+                    <option value="hrana">Hrana</option>
+                    <option value="pice">Pice</option>
+                    <option value="ostalo">Ostalo</option>
+                  </select>
                 </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingTwo">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseTwo"
-                      aria-expanded="false"
-                      aria-controls="collapseTwo"
-                    >
-                      Piće
-                    </button>
-                  </h2>
-                  <div
-                    id="collapseTwo"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingTwo"
-                    data-bs-parent="#accordionExample"
+                <div class="col">
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    v-bind="selectedTwo"
+                    v-if="selectedOne"
                   >
-                    <div class="accordion-body">
-                      <StavkeMenu :info="this.items" :additional="'pice'" />
-                    </div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingThree">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseThree"
-                      aria-expanded="false"
-                      aria-controls="collapseThree"
+                    <option
+                      v-for="(el, index) in kategorije[selectedOne]"
+                      :key="index"
                     >
-                      Ostalo
-                    </button>
-                  </h2>
-                  <div
-                    id="collapseThree"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingThree"
-                    data-bs-parent="#accordionExample"
-                  >
-                    <StavkeMenu :info="this.items" :additional="'ostalo'" />
-                  </div>
+                      {{ el }}
+                    </option>
+                  </select>
                 </div>
+                <div class="col"></div>
               </div>
+              <StavkeMenu :info="this.items" class="mb-3" />
+
               <div class="text-center" ref="pdf">
                 <QRCodeVue3
                   :value="getUrlQR()"
@@ -237,7 +196,7 @@
 <script>
 //aaaaaaaa
 import StavkeMenu from "@/components/StavkeMenu.vue";
-import { items, kategorije } from "@/store";
+import { items, kategorije, paginated } from "@/store";
 import QRCodeVue3 from "qrcode-vue3";
 import { menuHandlers } from "@/Warehouse/menu";
 
@@ -252,9 +211,20 @@ export default {
   mounted() {
     this.getMenuItems();
     this.sortItems();
+    this.getPaginated("pice", "Alkoholna pića", 2);
   },
 
   methods: {
+    async getPaginated(type, subtype, pageNumber) {
+      console.log(type, subtype, pageNumber);
+      this.paginated = await menuHandlers.searchByAndPaginate(
+        this.menuId,
+        type,
+        subtype,
+        pageNumber
+      );
+      console.log(this.paginated.data);
+    },
     getUrlQR() {
       return window.location.href + "/guest";
     },
@@ -342,6 +312,9 @@ export default {
       newData: "",
       QrURL: "",
       menuId: this.$route.params.id,
+      selectedOne: "",
+      selectedTwo: "",
+      paginated,
     };
   },
 };

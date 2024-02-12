@@ -45,6 +45,21 @@ const menuHandlers = {
     return response;
   },
 
+  async searchByAndPaginate(menuId, type, subtype, pageNumber) {
+    let response = await Service.get(
+      `/api/menu/${menuId}/items`,
+
+      {
+        params: {
+          type,
+          subtype,
+          pageNumber,
+        },
+      }
+    );
+    return response;
+  },
+
   async deleteItem(itemId) {
     const config = {
       headers: {

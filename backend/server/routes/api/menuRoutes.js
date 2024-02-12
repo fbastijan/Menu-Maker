@@ -47,7 +47,51 @@ let menu_item = {
         "categoriesIndex": 2  // Reference to user-defined item type
       },
 */
+const PAGE_SIZE = 10;
+router.get("/menu/:menuId/items", async (req, res) => {
+  try {
+    const db = await connectToMongoDB();
+    const collection = db.collection("menuItems");
+    let menuId = req.params.menuId;
+    let { pageNumber, type, subtype } = req.query;
+    pageNumber = parseInt(pageNumber) || 1;
 
+    // Query condition based on type and subtype
+    const query = {};
+    query.menuId = menuId;
+    if (type) {
+      query.type = type;
+    }
+    if (subtype) {
+      query.subtype = subtype;
+    }
+    console.log(JSON.stringify(query) + " query");
+    const totalItems = await collection.countDocuments(query);
+    console.log(totalItems + " broj itena");
+    const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+    console.log(totalPages + " broj stranica");
+
+    if (pageNumber < 1) {
+      pageNumber = 1;
+    } else if (pageNumber > totalPages) {
+      pageNumber = totalPages;
+    }
+
+    const items = await collection
+      .find(query)
+      .skip((pageNumber - 1) * PAGE_SIZE)
+      .limit(PAGE_SIZE)
+      .toArray();
+
+    const hasNextPage = pageNumber < totalPages;
+    const hasPrevPage = pageNumber > 1;
+
+    res.json({ items, hasNextPage, hasPrevPage });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 router.get("/menu/:userId", async (req, res) => {
   try {
     const db = await connectToMongoDB();

@@ -2,14 +2,18 @@
   <div>
     <div v-for="(item, index) in this.info" :key="index">
       <ul class="list-group">
-        <li class="list-group-item" v-if="this.additional == item.type">
+        <li class="list-group-item">
           <div class="row d-flex">
             <div class="col">Naziv: {{ item.naziv }}</div>
             <div class="col">Opis: {{ item.opis }}</div>
             <div class="col">Tip: {{ item.subtype }}</div>
             <div class="col">Cijena: {{ item.cijena }}Eura</div>
             <div class="col-1">
-              <a class="btn btn-sm" @click="itemClicked(item, index)">
+              <a
+                class="btn btn-sm"
+                data-bs-toggle="modal"
+                :data-bs-target="'#' + item.naziv + '-my-modal'"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -45,7 +49,7 @@
       </ul>
       <div
         class="modal fade"
-        :id="index + '-my-modal'"
+        :id="item.naziv + '-my-modal'"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -71,7 +75,7 @@
                   type="text"
                   class="form-control"
                   placeholder="npr.Pizza Margherita"
-                  v-model="modal_object.naziv"
+                  v-model="item.naziv"
                 />
               </div>
               <div class="mb-3">
@@ -79,7 +83,7 @@
                 <textarea
                   class="form-control"
                   rows="3"
-                  v-model="modal_object.opis"
+                  v-model="item.opis"
                 ></textarea>
               </div>
               <div class="mb-3">
@@ -87,7 +91,7 @@
                 <select
                   class="form-select"
                   aria-label="Default select example"
-                  v-model="modal_object.type"
+                  v-model="item.type"
                 >
                   <option value="pice">Piće</option>
                   <option value="hrana">Hrana</option>
@@ -96,25 +100,20 @@
               </div>
               <div
                 class="mb-3"
-                v-if="
-                  modal_object.type &&
-                  this.kategorije[this.modal_object.type].length > 0
-                "
+                v-if="item.type && this.kategorije[item.type].length > 0"
               >
                 <label class="form-label">Kategorija</label>
                 <select
                   class="form-select"
                   aria-label="Default select example"
-                  v-model="modal_object.subtype"
+                  v-model="item.subtype"
                 >
                   <option
-                    :value="item"
-                    v-for="(item, index) in this.kategorije[
-                      this.modal_object.type
-                    ]"
+                    :value="items"
+                    v-for="(items, index) in this.kategorije[item.type]"
                     :key="index"
                   >
-                    {{ item }}
+                    {{ items }}
                   </option>
                 </select>
               </div>
@@ -126,7 +125,7 @@
                   type="text"
                   class="form-control"
                   placeholder="npr 50"
-                  v-model="modal_object.cijena"
+                  v-model="item.cijena"
                 />
               </div>
             </div>
@@ -135,7 +134,7 @@
                 type="button"
                 class="btn btn-primary"
                 data-bs-dismiss="modal"
-                @click="updateItem(modal_object._id, modal_object)"
+                @click="updateItem(item._id, item)"
               >
                 Save changes
               </button>
@@ -151,7 +150,7 @@
 import { items, kategorije } from "@/store";
 import { menuHandlers } from "@/Warehouse/menu";
 export default {
-  props: ["info", "additional"],
+  props: ["info"],
   methods: {
     async updateItem(itemId, change) {
       delete change._id;
@@ -159,12 +158,12 @@ export default {
       console.log(res);
     },
     async deleteItem(id) {
-      console.log(JSON.stringify(this.items));
+      console.log(JSON.stringify(items));
       this.items.splice(
         this.items.findIndex((el) => {
           el._id == id;
         }),
-        1
+        -1
       );
       await menuHandlers.deleteItem(id);
     },
@@ -176,9 +175,10 @@ export default {
   },
   data() {
     return {
-      items,
+      items: items,
       kategorije,
       modal_object: {},
+      temp: this.info,
     };
   },
 };
