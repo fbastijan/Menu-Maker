@@ -36,11 +36,11 @@
                     <option value="ostalo">Ostalo</option>
                   </select>
                 </div>
-                <div class="col">
+                <div class="col d-flex">
                   <select
-                    class="form-select"
+                    class="form-select me-3"
                     aria-label="Default select example"
-                    v-bind="selectedTwo"
+                    v-model="selectedTwo"
                     v-if="selectedOne"
                   >
                     <option
@@ -50,11 +50,53 @@
                       {{ el }}
                     </option>
                   </select>
+                  <button
+                    class="btn btn-primary"
+                    @click="getPaginated(selectedOne, selectedTwo, 1)"
+                  >
+                    pretraži
+                  </button>
                 </div>
                 <div class="col"></div>
               </div>
-              <StavkeMenu :info="this.items" class="mb-3" />
-
+              <StavkeMenu :info="this.paginated.items" class="mb-3" />
+              <div class="text-center row" v-if="paginated.items">
+                <div class="col">
+                  <button
+                    v-if="this.paginated.hasPrevPage"
+                    class="btn btn-primary"
+                    @click="
+                      changePage(
+                        paginatedSelectedOne,
+                        paginatedSelectedTwo,
+                        this.page,
+                        'previous'
+                      )
+                    "
+                  >
+                    Prev
+                  </button>
+                </div>
+                <div class="col">
+                  <p>{{ page }}</p>
+                </div>
+                <div class="col">
+                  <button
+                    class="btn btn-primary"
+                    v-if="paginated.hasNextPage"
+                    @click="
+                      changePage(
+                        paginatedSelectedOne,
+                        paginatedSelectedTwo,
+                        this.page,
+                        'next'
+                      )
+                    "
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
               <div class="text-center" ref="pdf">
                 <QRCodeVue3
                   :value="getUrlQR()"
@@ -211,7 +253,6 @@ export default {
   mounted() {
     this.getMenuItems();
     this.sortItems();
-    this.getPaginated("pice", "Alkoholna pića", 2);
   },
 
   methods: {
@@ -223,7 +264,29 @@ export default {
         subtype,
         pageNumber
       );
-      console.log(this.paginated.data);
+      this.page = 1;
+      this.paginatedSelectedOne = this.selectedOne;
+      this.paginatedSelectedTwo = this.selectedTWo;
+      this.paginated = this.paginated.data;
+    },
+    async changePage(type, subtype, pageNumber, direction) {
+      console.log(type, subtype, pageNumber);
+
+      if (direction == "next" && this.paginated.hasNextPage) {
+        this.page++;
+        pageNumber++;
+      }
+      if (direction == "previous" && this.paginated.hasPrevPage) {
+        this.page--;
+        pageNumber--;
+      }
+      this.paginated = await menuHandlers.searchByAndPaginate(
+        this.menuId,
+        type,
+        subtype,
+        pageNumber
+      );
+      this.paginated = this.paginated.data;
     },
     getUrlQR() {
       return window.location.href + "/guest";
@@ -315,6 +378,9 @@ export default {
       selectedOne: "",
       selectedTwo: "",
       paginated,
+      paginatedSelectedOne: "",
+      paginatedSelectedTwo: "",
+      page: 1,
     };
   },
 };

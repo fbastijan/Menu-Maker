@@ -54,7 +54,7 @@ router.get("/menu/:menuId/items", async (req, res) => {
     const collection = db.collection("menuItems");
     let menuId = req.params.menuId;
     let { pageNumber, type, subtype } = req.query;
-    pageNumber = parseInt(pageNumber) || 1;
+    let pomPage = parseInt(pageNumber) || 1;
 
     // Query condition based on type and subtype
     const query = {};
@@ -65,26 +65,24 @@ router.get("/menu/:menuId/items", async (req, res) => {
     if (subtype) {
       query.subtype = subtype;
     }
-    console.log(JSON.stringify(query) + " query");
-    const totalItems = await collection.countDocuments(query);
-    console.log(totalItems + " broj itena");
-    const totalPages = Math.ceil(totalItems / PAGE_SIZE);
-    console.log(totalPages + " broj stranica");
 
-    if (pageNumber < 1) {
-      pageNumber = 1;
-    } else if (pageNumber > totalPages) {
-      pageNumber = totalPages;
+    const totalItems = await collection.countDocuments(query);
+
+    const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+    if (pomPage < 1) {
+      pomPage = 1;
+    } else if (pomPage > totalPages && totalPages != 0) {
+      pomPage = totalPages;
     }
 
     const items = await collection
       .find(query)
-      .skip((pageNumber - 1) * PAGE_SIZE)
+      .skip((pomPage - 1) * PAGE_SIZE)
       .limit(PAGE_SIZE)
       .toArray();
 
-    const hasNextPage = pageNumber < totalPages;
-    const hasPrevPage = pageNumber > 1;
+    const hasNextPage = pomPage < totalPages;
+    const hasPrevPage = pomPage > 1;
 
     res.json({ items, hasNextPage, hasPrevPage });
   } catch (err) {
