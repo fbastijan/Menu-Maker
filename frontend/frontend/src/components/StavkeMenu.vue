@@ -5,7 +5,7 @@
         <li class="list-group-item">
           <div class="row d-flex">
             <div class="col">Naziv: {{ item.naziv }}</div>
-            <div class="col">Opis: {{ item.opis }}</div>
+
             <div class="col">Tip: {{ item.subtype }}</div>
             <div class="col">Cijena: {{ item.cijena }}Eura</div>
             <div class="col-1">
@@ -98,10 +98,8 @@
                   <option value="ostalo">Ostalo</option>
                 </select>
               </div>
-              <div
-                class="mb-3"
-                v-if="item.type && this.kategorije[item.type].length > 0"
-              >
+
+              <div class="mb-3" v-if="item.type">
                 <label class="form-label">Kategorija</label>
                 <select
                   class="form-select"
@@ -117,10 +115,12 @@
                   </option>
                 </select>
               </div>
+
               <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label"
                   >Cijena u Eurima</label
                 >
+
                 <input
                   type="text"
                   class="form-control"
@@ -166,11 +166,6 @@ export default {
         -1
       );
       await menuHandlers.deleteItem(id);
-    },
-    itemClicked(item, index) {
-      window.$("#" + index + "-my-modal").modal("show");
-
-      this.modal_object = item;
     },
   },
   data() {

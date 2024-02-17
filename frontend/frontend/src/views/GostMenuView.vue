@@ -152,6 +152,7 @@
 <script>
 import { kategorije, items } from "@/store";
 import Subkategorije from "@/components/Subkategorije.vue";
+import { menuHandlers } from "@/Warehouse/menu";
 export default {
   name: "Home_view",
   components: {
@@ -162,6 +163,9 @@ export default {
       items,
       kategorije,
     };
+  },
+  mounted() {
+    this.kategorije = JSON.parse(menuHandlers.getStorage()).kategorije;
   },
 };
 </script>

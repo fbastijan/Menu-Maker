@@ -6,7 +6,7 @@
           <!--<MenuRevisor class="mb-3"></MenuRevisor>-->
           <div class="card custom-card shadow" style="border-radius: 25px">
             <div class="card-body">
-              <h1 class="card-title text-center display-2">Dobar Bar Pula</h1>
+              <h1 class="card-title text-center display-2">{{ name }}</h1>
               <button
                 type="button"
                 class="btn btn-primary mb-3"
@@ -78,7 +78,7 @@
                   </button>
                 </div>
                 <div class="col">
-                  <p>{{ page }}</p>
+                  <p>Page: {{ page }}</p>
                 </div>
                 <div class="col">
                   <button
@@ -253,9 +253,17 @@ export default {
   mounted() {
     this.getMenuItems();
     this.sortItems();
+    console.log(JSON.parse(menuHandlers.getStorage()));
+    this.menuInfo();
   },
 
   methods: {
+    menuInfo() {
+      let parsed = JSON.parse(menuHandlers.getStorage());
+      this.kategorije = parsed.kategorije;
+      this.name = parsed.name;
+    },
+
     async getPaginated(type, subtype, pageNumber) {
       console.log(type, subtype, pageNumber);
       this.paginated = await menuHandlers.searchByAndPaginate(
@@ -366,6 +374,7 @@ export default {
 
   data() {
     return {
+      name,
       items,
       pending: "",
       tip: "",

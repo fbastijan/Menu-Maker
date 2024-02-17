@@ -132,7 +132,7 @@ Desert</textarea
                 href="#"
                 class="btn custom-btn btn-primary btn-lg m-5"
                 @click="finalize()"
-                >Započni Menu!</a
+                >Završi</a
               >
             </div>
           </div>
@@ -146,14 +146,36 @@ Desert</textarea
 import { menuHandlers } from "@/Warehouse/menu";
 export default {
   name: "Menu_creator",
-
+  mounted() {
+    this.getMenu();
+  },
   methods: {
+    async getMenu() {
+      let menu = (await menuHandlers.getMenu()).data.menu.menu;
+      console.log(menu);
+      if (menu) localStorage.setItem("menu", JSON.stringify(menu));
+      if (menu) this.menu = menu;
+      if (menu) this.displayKategorije(menu);
+
+      console.log(this.menu);
+    },
     addKat(kat, gumb) {
       if (this.kategorije[kat])
         this.kategorije[kat] = this.kategorije[kat] + "\n" + gumb;
       else this.kategorije[kat] = gumb;
     },
     async finalize() {
+      this.editKat();
+      let res = await menuHandlers.setMenu(this.menu);
+
+      localStorage.setItem("menuId", res.data.id);
+      this.$router.push("/menu/" + res.data.id);
+    },
+
+    editKat() {
+      this.kategorije.pice = this.kategorije.pice.replace(/\n+$/, "");
+      this.kategorije.hrana = this.kategorije.hrana.replace(/\n+$/, "");
+      this.kategorije.ostalo = this.kategorije.ostalo.replace(/\n+$/, "");
       this.menu.kategorije.pice = this.kategorije.pice.trim()
         ? this.kategorije.pice.split("\n")
         : [];
@@ -163,10 +185,25 @@ export default {
       this.menu.kategorije.ostalo = this.kategorije.ostalo.trim()
         ? this.kategorije.ostalo.split("\n")
         : [];
-      let res = await menuHandlers.setMenu(this.menu);
+    },
+    displayKategorije(menu) {
+      this.kategorije.pice =
+        this.kategorije.hrana =
+        this.kategorije.ostalo =
+          "";
+      menu.kategorije.pice.forEach((el) => {
+        this.kategorije.pice = this.kategorije.pice + el + "\n";
+      });
+      menu.kategorije.hrana.forEach((el) => {
+        this.kategorije.hrana = this.kategorije.hrana + el + "\n";
+      });
+      menu.kategorije.ostalo.forEach((el) => {
+        this.kategorije.ostalo = this.kategorije.ostalo + el + "\n";
+      });
 
-      localStorage.setItem("menuId", res.data.id);
-      this.$router.push("/menu/" + res.data.id);
+      this.kategorije.pice = this.kategorije.pice.replace(/\n+$/, "");
+      this.kategorije.hrana = this.kategorije.hrana.replace(/\n+$/, "");
+      this.kategorije.ostalo = this.kategorije.ostalo.replace(/\n+$/, "");
     },
   },
   data() {
@@ -180,7 +217,7 @@ export default {
         },
       },
       kategorije: {
-        pice: "Alkoholna pića\nBezalkoholna pića\nGazirana Bezalkoholna pića\nKava",
+        pice: "Alkoholna pića\nBezalkoholna pića\nGazirana Bezalkoholna pića\nKava\n",
         hrana: "Predjelo\nGlavno jelo\nDesert",
         ostalo: "",
       },

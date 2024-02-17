@@ -10,7 +10,7 @@ const menuHandlers = {
         Authorization: splitHeader(),
       },
     };
-    let response = await Service.post("/api/menu", { menu }, config);
+    let response = await Service.put("/api/menu", { menu }, config);
     return response;
   },
   async getMenuItems(menuId) {
@@ -68,6 +68,24 @@ const menuHandlers = {
     };
     let response = await Service.delete(`/api/menu/item/${itemId}`, config);
     return response;
+  },
+  async getMenu() {
+    let id = await this.getUserId();
+    let response = await Service.get(`/api/menu/${id}`);
+    return response;
+  },
+  async getUserId() {
+    const config = {
+      headers: {
+        Authorization: splitHeader(),
+      },
+    };
+    let response = await Service.get(`/api/user`, config);
+    console.log(response.data.user);
+    return response.data.user;
+  },
+  getStorage() {
+    return localStorage.getItem("menu");
   },
 };
 export { menuHandlers };

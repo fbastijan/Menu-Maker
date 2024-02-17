@@ -105,10 +105,7 @@ router.get("/login", async (req, res) => {
     });
   });
 });
-router.delete("/logout", (req, res) => {
-  console.log("Hello logout");
-  res.send("hello logout");
-});
+
 router.get("/user", verifyToken, (req, res) => {
   const userId = req.userId;
   res.status(200).json({

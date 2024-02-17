@@ -95,7 +95,7 @@ router.get("/menu/:userId", async (req, res) => {
     const db = await connectToMongoDB();
     const collection = db.collection("menu");
     try {
-      console.log(req.params.userId);
+      console.log(req.params.userId + "to je to");
       let result = await collection.findOne({ userId: req.params.userId });
       res.status(200).json({
         success: "true",
@@ -175,34 +175,53 @@ router.get("/menu/item/:menuId", async (req, res) => {
 });
 
 //inicijaliziraj menu
-router.post("/menu", verifyToken, async (req, res) => {
+router.put("/menu", verifyToken, async (req, res) => {
   let newMenu = {
     userId: req.userId,
     ...req.body,
   };
-
+  let pom = newMenu;
+  console.log(pom.menu);
   try {
     const db = await connectToMongoDB();
     const collection = db.collection("menu");
-    /*    const result = await collection.findOne({ userId: req.userId });
-    if (res) {
-      return result._id;
-    } */
-    collection
-      .insertOne(newMenu)
-      .then((menu) => {
-        return res.status(201).json({
+    const result = await collection.findOne({ userId: req.userId });
+    if (result) {
+      try {
+        let upRes = await collection.updateOne(
+          { userId: req.userId },
+          { $set: { menu: newMenu.menu } }
+        );
+        console.log(upRes);
+        return res.status(200).json({
           success: "true",
-          msg: "Dodao si menu",
-          id: menu.insertedId,
+          msg: "Updateao si menu",
+          id: result._id,
         });
-      })
-      .catch((err) => {
-        console.error("Greška pri dodavanju menu-a:", err);
-        return res.status(500).json({
-          msg: "Internal server error",
+      } catch {
+        return res.status(404).json({
+          success: "true",
+          msg: "Nije pronađen Menu",
+          id: req.userId,
         });
-      });
+      }
+    } else {
+      collection
+        .insertOne(newMenu)
+        .then((menu) => {
+          return res.status(201).json({
+            success: "true",
+            msg: "Dodao si menu",
+            id: menu.insertedId,
+          });
+        })
+        .catch((err) => {
+          console.error("Greška pri dodavanju menu-a:", err);
+          return res.status(500).json({
+            msg: "Internal server error",
+          });
+        });
+    }
   } catch {
     return res.status(500).json({
       msg: "Internal server error",
