@@ -16,12 +16,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link" href="#"
+            <a class="nav-link" href="#" v-if="authenticated.zast"
               ><router-link to="/" style="text-decoration: none; color: inherit"
                 >Home</router-link
               ></a
             >
-            <a class="nav-link" href="#"
+            <a class="nav-link" href="#" v-if="authenticated.zast"
               ><router-link
                 to="/menucreator"
                 style="text-decoration: none; color: inherit"

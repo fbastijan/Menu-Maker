@@ -14,7 +14,7 @@ function verifyToken(req, res, next) {
       return res.status(401).json({ message: "Invalid token." });
     }
 
-    req.userId = decoded._id; // Attach the user ID to the request object
+    req.userId = decoded._id;
     next();
   });
 }

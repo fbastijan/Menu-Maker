@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(item, index) in this.info" :key="index">
+    <div v-for="(item, index) in this.temp" :key="index">
       <ul class="list-group">
         <li class="list-group-item">
           <div class="row d-flex">
@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import { items, kategorije } from "@/store";
+import { items, kategorije, paginated } from "@/store";
 import { menuHandlers } from "@/Warehouse/menu";
 export default {
   props: ["info"],
@@ -158,23 +158,24 @@ export default {
       console.log(res);
     },
     async deleteItem(id) {
-      console.log(JSON.stringify(items));
-      this.items.splice(
-        this.items.findIndex((el) => {
-          el._id == id;
-        }),
-        -1
-      );
+      this.temp = this.temp.filter((obj) => obj._id !== id);
       await menuHandlers.deleteItem(id);
     },
   },
+
   data() {
     return {
-      items: items,
       kategorije,
       modal_object: {},
       temp: this.info,
+      items,
+      paginated,
     };
+  },
+  watch: {
+    info: function () {
+      this.temp = this.info;
+    },
   },
 };
 </script>

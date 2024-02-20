@@ -4,50 +4,9 @@ const { client, connectToMongoDB } = require("../../database");
 const { verifyToken } = require("../../middlewares/userMiddlewares");
 const { ObjectId } = require("mongodb");
 
-/*
-let menu = {
-user:"",
-current:[],
-history:{
-    updated_at:"",
-    state:[]
-}
-}
-
-let menu_item = {
-    name: "",
-    price: 0.0,
-    type: "",
-    subtype:""
-    description:""
-}
-*/
-
-/*
-{
-    "title": "My Restaurant Menu",
-    "categories":["fish", "pizza", "pasta"]
-    
- 
-
-}
-
-
-
-      {
-        "name": "Spaghetti Bolognese",
-        "description": "Classic Italian pasta with meat sauce",
-        "price": 12.99,
-        "categoriesIndex": 2  // Reference to predefined item type
-      },
-      {
-        "name": "Custom Pasta Dish",
-        "description": "User-defined pasta dish",
-        "price": 15.99,
-        "categoriesIndex": 2  // Reference to user-defined item type
-      },
-*/
 const PAGE_SIZE = 10;
+//paginirano traženje item-a
+
 router.get("/menu/:menuId/items", async (req, res) => {
   try {
     const db = await connectToMongoDB();
@@ -86,10 +45,11 @@ router.get("/menu/:menuId/items", async (req, res) => {
 
     res.json({ items, hasNextPage, hasPrevPage });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// traženje mernu-a na bazi usera
 router.get("/menu/:userId", async (req, res) => {
   try {
     const db = await connectToMongoDB();
@@ -114,6 +74,8 @@ router.get("/menu/:userId", async (req, res) => {
     });
   }
 });
+
+// brisanje item-a iz baze
 router.delete("/menu/item/:itemId", verifyToken, async (req, res) => {
   try {
     const db = await connectToMongoDB();
@@ -146,6 +108,7 @@ router.delete("/menu/item/:itemId", verifyToken, async (req, res) => {
   }
 });
 
+//dohvacanje svih item-a na menu
 router.get("/menu/item/:menuId", async (req, res) => {
   try {
     const db = await connectToMongoDB();
@@ -228,6 +191,8 @@ router.put("/menu", verifyToken, async (req, res) => {
     });
   }
 });
+
+//Dodavanje tem-a na menu
 router.post("/menu/item/:menuId", verifyToken, async (req, res) => {
   const db = await connectToMongoDB();
   const collection = db.collection("menuItems");
@@ -252,11 +217,12 @@ router.post("/menu/item/:menuId", verifyToken, async (req, res) => {
     });
 });
 router.post("/menu/:userId/backup", verifyToken, async (req, res) => {});
-//dodavanje na menu
+
+//Updateanje Menu Itema
 router.patch("/menu/item/:itemId", verifyToken, async (req, res) => {
   const { itemId } = req.params;
   const updateData = req.body;
-  console.log(itemId);
+
   try {
     const db = await connectToMongoDB();
     const collection = db.collection("menuItems");
