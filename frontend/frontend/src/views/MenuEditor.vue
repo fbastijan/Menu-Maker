@@ -246,7 +246,6 @@ export default {
   components: {
     StavkeMenu,
     QRCodeVue3,
-    //MenuRevisor,
   },
   mounted() {
     this.getMenuItems();
@@ -316,7 +315,6 @@ export default {
         "\n";
       console.log(JSON.stringify(this.pending));
       this.modal_object = {};
-      this.sortItems();
     },
 
     async finializeMenu() {
@@ -343,12 +341,12 @@ export default {
 
       if (arrPending.length != 0) {
         try {
-          let res = await menuHandlers.setMenuItem(this.menuId, arrPending);
-          console.log(res.data);
+          await menuHandlers.setMenuItem(this.menuId, arrPending);
+
           this.pending = "";
           this.getMenuItems();
         } catch (e) {
-          console.log(e);
+          alert(e);
         }
       }
     },

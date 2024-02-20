@@ -112,17 +112,22 @@ router.delete("/menu/item/:itemId", verifyToken, async (req, res) => {
 router.get("/menu/item/:menuId", async (req, res) => {
   try {
     const db = await connectToMongoDB();
-    const collection = db.collection("menuItems");
+    const itemsCollection = db.collection("menuItems");
+    const menuCollection = db.collection("menu");
     try {
-      let result = await collection
+      let result = await itemsCollection
         .find({
           menuId: req.params.menuId,
         })
         .toArray();
+      let resultMenu = await menuCollection.findOne({
+        _id: new ObjectId(req.params.menuId),
+      });
       res.status(200).json({
         success: "true",
         msg: "pronšao si menu",
-        menu: result,
+        menuItems: result,
+        menu: resultMenu,
       });
       return;
     } catch {
@@ -192,7 +197,7 @@ router.put("/menu", verifyToken, async (req, res) => {
   }
 });
 
-//Dodavanje tem-a na menu
+//Dodavanje item-a na menu
 router.post("/menu/item/:menuId", verifyToken, async (req, res) => {
   const db = await connectToMongoDB();
   const collection = db.collection("menuItems");
@@ -240,6 +245,65 @@ router.patch("/menu/item/:itemId", verifyToken, async (req, res) => {
     return res.status(500).json({
       success: "false",
       msg: "Dogodila se greška pri updateanju",
+    });
+  }
+});
+
+//Arhiviranje
+router.post("/menu/:menuId/arhiva", async (req, res) => {
+  let menuId = req.params.menuId;
+  try {
+    try {
+      const db = await connectToMongoDB();
+      const menuCollection = db.collection("menu");
+      let itemsCollection = db.collection("menuItems");
+      let menuResult = await menuCollection.findOne({
+        _id: new ObjectId(menuId),
+      });
+      let itemsResult = await itemsCollection
+        .find({
+          menuId: menuId,
+        })
+        .toArray();
+
+      try {
+        let docArhiva = {
+          dateOfArchiving: new Date(),
+          menu: menuResult.menu,
+        };
+
+        console.log(docArhiva);
+        const arhivaCollection = db.collection("arhiva");
+        const arhivaItemsCollection = db.collection("arhivaItems");
+        let result = await arhivaCollection.insertOne(docArhiva);
+
+        itemsResult.forEach((element) => {
+          delete element._id;
+          element.arhivaId = result.insertedId;
+        });
+        let result2 = await arhivaItemsCollection.insertMany(itemsResult);
+        return res.status(200).json({
+          success: "true",
+          msg: "Uspio si arhivirati",
+          result,
+          result2,
+        });
+      } catch (e) {
+        return res.status(500).json({
+          success: "false",
+          msg: "Dogodila se greška pri dodavanja novog collectiona",
+        });
+      }
+    } catch (e) {
+      return res.status(500).json({
+        success: "false",
+        msg: "Dogodila se greška pri spajanju na postojeće baze",
+      });
+    }
+  } catch (E) {
+    return res.status(500).json({
+      success: "false",
+      msg: "Dogodila se greška pri dodavanju",
     });
   }
 });

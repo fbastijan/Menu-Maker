@@ -171,7 +171,20 @@ export default {
       localStorage.setItem("menuId", res.data.id);
       this.$router.push("/menu/" + res.data.id);
     },
-
+    removeDuplicates(arr) {
+      var uniqueArray = [];
+      arr.forEach(function (item) {
+        var lowerCaseItem = item.toLowerCase(); // Convert item to lowercase
+        if (
+          !uniqueArray.some(function (existingItem) {
+            return existingItem.toLowerCase() === lowerCaseItem;
+          })
+        ) {
+          uniqueArray.push(item);
+        }
+      });
+      return uniqueArray;
+    },
     editKat() {
       this.kategorije.pice = this.kategorije.pice.replace(/\n+$/, "");
       this.kategorije.hrana = this.kategorije.hrana.replace(/\n+$/, "");
@@ -185,6 +198,15 @@ export default {
       this.menu.kategorije.ostalo = this.kategorije.ostalo.trim()
         ? this.kategorije.ostalo.split("\n")
         : [];
+      this.menu.kategorije.pice = this.removeDuplicates(
+        this.menu.kategorije.pice
+      );
+      this.menu.kategorije.hrana = this.removeDuplicates(
+        this.menu.kategorije.hrana
+      );
+      this.menu.kategorije.ostalo = this.removeDuplicates(
+        this.menu.kategorije.ostalo
+      );
     },
     displayKategorije(menu) {
       this.kategorije.pice =

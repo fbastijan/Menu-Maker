@@ -12,7 +12,7 @@
               <a
                 class="btn btn-sm"
                 data-bs-toggle="modal"
-                :data-bs-target="'#' + item.naziv + '-my-modal'"
+                :data-bs-target="'#A' + item._id + '-my-modal'"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@
       </ul>
       <div
         class="modal fade"
-        :id="item.naziv + '-my-modal'"
+        :id="'A' + item._id + '-my-modal'"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"

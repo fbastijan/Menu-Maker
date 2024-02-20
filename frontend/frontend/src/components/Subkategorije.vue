@@ -6,14 +6,18 @@
         <p>{{ this.items.cijena }} €</p>
       </div>
       <div class="col">
-        <a class="link-opacity-75-hover" href="#" @click="itemClicked(items)"
+        <a
+          class="link-opacity-75-hover"
+          href="#"
+          data-bs-toggle="modal"
+          :data-bs-target="'#A' + this.items._id + '-my-modal'"
           >Opširnije</a
         >
       </div>
     </div>
     <hr />
 
-    <div class="modal" tabindex="-1" id="my-modal-item">
+    <div class="modal" tabindex="-1" :id="'A' + this.items._id + '-my-modal'">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -27,7 +31,7 @@
           </div>
           <div class="modal-body">
             <h1 class="modal-title text-center mb-3">Opis</h1>
-            <p class="fw-bolder">{{ modal_object.opis }}</p>
+            <p class="fw-bolder">{{ this.items.opis }}</p>
           </div>
           <div class="modal-footer">
             <button

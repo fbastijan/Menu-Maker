@@ -5,7 +5,7 @@
         <div class="col">
           <div class="card custom-card shadow" style="border-radius: 25px">
             <div class="card-body">
-              <h1 class="card-title text-center mb-5">Dobar Bar Menu</h1>
+              <h1 class="card-title text-center mb-5">{{ this.menu.name }}</h1>
               <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                   <button
@@ -94,6 +94,7 @@
                       <div class="col"></div>
                     </div>
                     <hr />
+
                     <div
                       class=""
                       v-for="(item, index) in kategorije.pice"
@@ -132,7 +133,7 @@
                       <h3 class="h3 mt-3">
                         <p>{{ item }}</p>
                       </h3>
-                      <div v-for="(item2, index2) in items" :key="index2">
+                      <div v-for="(item2, index2) in this.items" :key="index2">
                         <div v-if="item2.subtype == item">
                           <Subkategorije :items="item2" />
                         </div>
@@ -150,9 +151,9 @@
 </template>
 
 <script>
-import { kategorije, items } from "@/store";
 import Subkategorije from "@/components/Subkategorije.vue";
 import { menuHandlers } from "@/Warehouse/menu";
+import { kategorije } from "@/store";
 export default {
   name: "Home_view",
   components: {
@@ -160,12 +161,23 @@ export default {
   },
   data() {
     return {
-      items,
+      menu: {},
+      items: [],
       kategorije,
     };
   },
   mounted() {
-    this.kategorije = JSON.parse(menuHandlers.getStorage()).kategorije;
+    this.dohvatiSveIteme();
+  },
+  methods: {
+    async dohvatiSveIteme() {
+      let res = await menuHandlers.getMenuItems(this.$route.params.id);
+      console.log(this.$route.params.id);
+      this.items = res.data.menuItems;
+      this.menu = res.data.menu.menu;
+      this.kategorije = this.menu.kategorije;
+      console.log(JSON.stringify(this.menu));
+    },
   },
 };
 </script>
