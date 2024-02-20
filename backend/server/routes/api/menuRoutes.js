@@ -268,6 +268,7 @@ router.post("/menu/:menuId/arhiva", async (req, res) => {
 
       try {
         let docArhiva = {
+          menuId: menuId,
           dateOfArchiving: new Date(),
           menu: menuResult.menu,
         };
@@ -279,7 +280,7 @@ router.post("/menu/:menuId/arhiva", async (req, res) => {
 
         itemsResult.forEach((element) => {
           delete element._id;
-          element.arhivaId = result.insertedId;
+          element.arhivaId = result.insertedId.toString();
         });
         let result2 = await arhivaItemsCollection.insertMany(itemsResult);
         return res.status(200).json({
