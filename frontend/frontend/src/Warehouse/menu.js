@@ -1,7 +1,7 @@
 import { Service, auth } from "./auth";
 let splitHeader = () => {
-  let splitted = auth.getUser().split(" ");
-  return splitted[1];
+  let splitted = auth.getUser();
+  return splitted;
 };
 const menuHandlers = {
   async setMenu(menu) {
@@ -86,6 +86,32 @@ const menuHandlers = {
   },
   getStorage() {
     return localStorage.getItem("menu");
+  },
+  async Arhiviraj(menuId) {
+    const config = {
+      headers: {
+        Authorization: splitHeader(),
+      },
+    };
+
+    let response = await Service.post(`/api/menu/${menuId}/arhiva`, {}, config);
+    return response;
+  },
+  async dohvatiArhivu(stranica) {
+    try {
+      let result = await Service.get(
+        "/api/arhiva",
+
+        {
+          params: {
+            pageNumber: stranica,
+          },
+        }
+      );
+      return result.data.result;
+    } catch (e) {
+      return [];
+    }
   },
 };
 export { menuHandlers };

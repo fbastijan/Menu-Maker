@@ -1,10 +1,21 @@
 import axios from "axios";
-
+import $router from "@/router";
 let Service = axios.create({
   baseURL: "http://localhost:3000/",
   timeout: 10000000,
 });
-
+Service.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status == 401) {
+      auth.logout();
+      $router.go();
+    }
+    // console.error('Interceptor', error.response);
+  }
+);
 const auth = {
   async login(username, password) {
     let response = await Service.get("/api/login", {

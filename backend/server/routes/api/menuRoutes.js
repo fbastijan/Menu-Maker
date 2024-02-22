@@ -250,7 +250,7 @@ router.patch("/menu/item/:itemId", verifyToken, async (req, res) => {
 });
 
 //Arhiviranje
-router.post("/menu/:menuId/arhiva", async (req, res) => {
+router.post("/menu/:menuId/arhiva", verifyToken, async (req, res) => {
   let menuId = req.params.menuId;
   try {
     try {
@@ -305,6 +305,48 @@ router.post("/menu/:menuId/arhiva", async (req, res) => {
     return res.status(500).json({
       success: "false",
       msg: "Dogodila se greška pri dodavanju",
+    });
+  }
+});
+
+router.get(`/arhiva`, async (req, res) => {
+  let { pageNumber } = req.query;
+  let pomPage = parseInt(pageNumber);
+  console.log(req.query);
+  try {
+    const db = await connectToMongoDB();
+    const arhivaCollection = db.collection("arhiva");
+    try {
+      const totalItems = await arhivaCollection.countDocuments();
+      console.log(totalItems);
+      const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+      if (pomPage < 1) {
+        pomPage = 1;
+      } else if (pomPage > totalPages && totalPages != 0) {
+        pomPage = totalPages;
+      }
+
+      const items = await arhivaCollection
+        .find()
+        .skip((pomPage - 1) * PAGE_SIZE)
+        .limit(PAGE_SIZE)
+        .toArray();
+
+      const hasNextPage = pomPage < totalPages;
+      console.log(pomPage);
+      const hasPrevPage = pomPage > 1;
+
+      res.status(200).json({
+        success: true,
+        msg: "Pronašao si stranicu " + pageNumber,
+        result: { items, hasNextPage, hasPrevPage },
+      });
+    } catch (e) {}
+  } catch (e) {
+    return res.status(500).json({
+      success: "false",
+      msg: "Dogodila se greška pri spajanju",
+      error: e,
     });
   }
 });

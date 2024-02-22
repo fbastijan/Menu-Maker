@@ -23,6 +23,7 @@
                   Arhiva
                 </button>
               </router-link>
+
               <div class="row mb-3">
                 <div class="col-2">
                   <select
@@ -250,17 +251,27 @@ export default {
   mounted() {
     this.getMenuItems();
     this.sortItems();
-    console.log(JSON.parse(menuHandlers.getStorage()));
     this.menuInfo();
+    window.addEventListener("beforeunload", this.unload);
+  },
+  unmounted() {
+    this.arhiviraj(this.menuId);
   },
 
   methods: {
+    async unload() {
+      console.log("aaaaa");
+      await this.arhiviraj(this.menuId);
+    },
     menuInfo() {
       let parsed = JSON.parse(menuHandlers.getStorage());
       this.kategorije = parsed.kategorije;
       this.name = parsed.name;
     },
-
+    async arhiviraj() {
+      let result = await menuHandlers.Arhiviraj(this.menuId);
+      console.log(result);
+    },
     async getPaginated(type, subtype, pageNumber) {
       console.log(type, subtype, pageNumber);
       this.paginated = await menuHandlers.searchByAndPaginate(
@@ -370,7 +381,7 @@ export default {
 
   data() {
     return {
-      name,
+      name: "",
       items,
       pending: "",
       tip: "",

@@ -12,14 +12,16 @@
                 style="text-decoration: none; color: inherit"
               >
               </router-link>
-              <ul class="list-group">
+              <ul class="list-group mb-3">
                 <li
                   class="list-group-item"
-                  v-for="(el, index) in random_dates"
+                  v-for="(el, index) in arhiva.items"
                   :key="index"
                 >
                   <div class="row">
-                    <div class="col">{{ el }}</div>
+                    <div class="col">
+                      {{ applyDateFormatting(el.dateOfArchiving) }}
+                    </div>
                     <div class="col-1">
                       <router-link to="/menu/arhiva/1">
                         <button class="btn">
@@ -44,6 +46,29 @@
                   </div>
                 </li>
               </ul>
+              <div class="text-center row" v-if="arhiva.items">
+                <div class="col">
+                  <button
+                    v-if="this.arhiva.hasPrevPage"
+                    class="btn btn-primary"
+                    @click="changePage(this.page, 'previous')"
+                  >
+                    Prev
+                  </button>
+                </div>
+                <div class="col">
+                  <p>Page: {{ page }}</p>
+                </div>
+                <div class="col">
+                  <button
+                    class="btn btn-primary"
+                    v-if="this.arhiva.hasNextPage"
+                    @click="changePage(this.page, 'next')"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -54,10 +79,12 @@
 
 <script>
 //aaaaaaaa
+import { menuHandlers } from "@/Warehouse/menu";
 export default {
   name: "Home_view",
   data() {
     return {
+      page: 1,
       random_dates: [
         "2022-03-15",
         "2023-08-27",
@@ -65,7 +92,38 @@ export default {
         "2023-04-19",
         "2022-06-08",
       ],
+      arhiva: [],
     };
+  },
+  computed: {},
+  mounted() {
+    this.getPaginated(this.page);
+  },
+  methods: {
+    async getPaginated(page) {
+      this.arhiva = await menuHandlers.dohvatiArhivu(page);
+      console.log(this.arhiva);
+    },
+    async changePage(pageNumber, direction) {
+      if (direction == "next" && this.arhiva.hasNextPage) {
+        this.page = pageNumber + 1;
+      }
+      if (direction == "previous" && this.arhiva.hasPrevPage) {
+        this.page = pageNumber - 1;
+      }
+      this.arhiva = await menuHandlers.dohvatiArhivu(this.page);
+    },
+    applyDateFormatting(dateString) {
+      let date = new Date(dateString);
+      return date.toLocaleDateString("hr-HR", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      });
+    },
   },
 };
 </script>
