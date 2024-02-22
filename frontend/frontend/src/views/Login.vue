@@ -70,7 +70,7 @@ export default {
           this.$router.push("/menucreator");
         })
         .catch((err) => {
-          +alert("neispravan Username ili password");
+          alert("neispravan Username ili password", err);
         });
     },
   },
