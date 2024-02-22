@@ -4,6 +4,9 @@ const { client, connectToMongoDB } = require("../../database");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { verifyToken } = require("../../middlewares/userMiddlewares");
+require("dotenv").config();
+const tajna = process.env.SECRET;
+
 router.post("/register", async (req, res) => {
   let name = req.body.name;
   let password = req.body.password;
@@ -89,7 +92,7 @@ router.get("/login", async (req, res) => {
           name: user.name,
           email: user.email,
         };
-        jwt.sign(payload, "secret", { expiresIn: 604800 }, (err, token) => {
+        jwt.sign(payload, tajna, { expiresIn: 604800 }, (err, token) => {
           res.status(200).json({
             msg: "you are logged in",
             success: true,
