@@ -1,7 +1,9 @@
 import axios from "axios";
 import $router from "@/router";
+
+const baseURL = "http://localhost:3000/";
 let Service = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: baseURL,
   timeout: 10000000,
 });
 Service.interceptors.response.use(
@@ -27,14 +29,13 @@ const auth = {
     return true;
   },
   async signup(userDetail) {
-    console.log(userDetail.password);
     await Service.post("/api/register", {
       email: userDetail.email,
       username: userDetail.username,
       password: userDetail.password,
       confirm_password: userDetail.confirm_password,
     });
-    console.log("regao sam se ");
+
     return true;
   },
 
@@ -53,4 +54,4 @@ const auth = {
   },
 };
 
-export { Service, auth };
+export { Service, auth, baseURL };

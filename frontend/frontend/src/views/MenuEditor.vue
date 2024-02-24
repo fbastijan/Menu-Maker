@@ -260,7 +260,6 @@ export default {
 
   methods: {
     async unload() {
-      console.log("aaaaa");
       await this.arhiviraj(this.menuId);
     },
     menuInfo() {
@@ -269,11 +268,9 @@ export default {
       this.name = parsed.name;
     },
     async arhiviraj() {
-      let result = await menuHandlers.Arhiviraj(this.menuId);
-      console.log(result);
+      await menuHandlers.Arhiviraj(this.menuId);
     },
     async getPaginated(type, subtype, pageNumber) {
-      console.log(type, subtype, pageNumber);
       this.paginated = await menuHandlers.searchByAndPaginate(
         this.menuId,
         type,
@@ -286,8 +283,6 @@ export default {
       this.paginated = this.paginated.data;
     },
     async changePage(type, subtype, pageNumber, direction) {
-      console.log(type, subtype, pageNumber);
-
       if (direction == "next" && this.paginated.hasNextPage) {
         this.page++;
         pageNumber++;
@@ -324,7 +319,7 @@ export default {
         "&" +
         this.modal_object.cijena +
         "\n";
-      console.log(JSON.stringify(this.pending));
+
       this.modal_object = {};
     },
 

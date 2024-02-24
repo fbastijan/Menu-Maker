@@ -23,7 +23,7 @@
                       {{ applyDateFormatting(el.dateOfArchiving) }}
                     </div>
                     <div class="col-1">
-                      <router-link to="/menu/arhiva/1">
+                      <router-link :to="'/menu/arhiva/' + el._id">
                         <button class="btn">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +96,6 @@ export default {
   methods: {
     async getPaginated(page) {
       this.arhiva = await menuHandlers.dohvatiArhivu(page);
-      console.log(this.arhiva);
     },
     async changePage(pageNumber, direction) {
       if (direction == "next" && this.arhiva.hasNextPage) {

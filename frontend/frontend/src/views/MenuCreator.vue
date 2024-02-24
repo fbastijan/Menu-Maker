@@ -19,6 +19,19 @@
                 <label for="floatingInput">Your Menu Name</label>
               </div>
 
+              <img
+                :src="imageLoading ? 'https://placehold.co/100' : imgDataUrl"
+                @load="imageLoading = false"
+                class="mx-auto d-flex"
+                style="height: 100; width: 100"
+              /><img />
+              <button
+                class="btn btn-sm btn-success mx-auto d-flex mb-3"
+                @click="toggleShow()"
+              >
+                set avatar
+              </button>
+
               <h3 class="card-title text-center mb-3">
                 Definiranje kategorija
               </h3>
@@ -139,25 +152,60 @@ Desert</textarea
         </div>
       </div>
     </div>
+
+    <div>
+      <my-upload
+        @crop-success="cropSuccess"
+        field="img"
+        v-model="show"
+        :width="100"
+        :height="100"
+        img-format="png"
+        langType="en"
+        :noCircle="true"
+        @crop-upload-success="cropUploadSuccess"
+        @crop-upload-fail="cropUploadFail"
+      ></my-upload>
+    </div>
   </div>
 </template>
 
 <script>
 import { menuHandlers } from "@/Warehouse/menu";
+import { imageHandlers } from "@/Warehouse/images";
+import myUpload from "vue-image-crop-upload";
+
 export default {
   name: "Menu_creator",
+  components: {
+    "my-upload": myUpload,
+  },
   mounted() {
     this.getMenu();
   },
+  watch: {
+    imageDataUrl: function () {
+      this.imageLoading = true;
+    },
+  },
   methods: {
+    async dohvatiSliku() {
+      let res = await imageHandlers.dohvatiSliku(this.menuId);
+      this.imgDataUrl = res.data.result;
+    },
+    toggleShow() {
+      this.show = !this.show;
+      console.log(this.show);
+    },
+
     async getMenu() {
-      let menu = (await menuHandlers.getMenu()).data.menu.menu;
-      console.log(menu);
+      let pom = (await menuHandlers.getMenu()).data.menu;
+      this.menuId = pom._id;
+      this.dohvatiSliku();
+      let menu = pom.menu;
       if (menu) localStorage.setItem("menu", JSON.stringify(menu));
       if (menu) this.menu = menu;
       if (menu) this.displayKategorije(menu);
-
-      console.log(this.menu);
     },
     addKat(kat, gumb) {
       if (this.kategorije[kat])
@@ -227,9 +275,46 @@ export default {
       this.kategorije.hrana = this.kategorije.hrana.replace(/\n+$/, "");
       this.kategorije.ostalo = this.kategorije.ostalo.replace(/\n+$/, "");
     },
+
+    async uploadImage() {
+      await imageHandlers.prenesiSliku(this.menuId, this.imgDataUrl);
+    },
+    async cropSuccess(imgDataUrl, field) {
+      console.log("-------- crop success --------", field);
+      this.imgDataUrl = imgDataUrl;
+      console.log(this.imgDataUrl);
+
+      await this.uploadImage();
+    },
+    cropUploadSuccess(jsonData, field) {
+      console.log("-------- upload success --------");
+      console.log(jsonData);
+      console.log("field: " + field);
+    },
+    /**
+     * upload fail
+     *
+     * [param] status    server api return error status, like 500
+     * [param] field
+     */
+    cropUploadFail(status, field) {
+      console.log("-------- upload fail --------");
+      console.log(status);
+      console.log("field: " + field);
+    },
+    /**
+     * upload success
+     *
+     * [param] jsonData  server api return data, already json encode
+     * [param] field
+     */
   },
   data() {
     return {
+      imageLoading: true,
+      show: false,
+      imgDataUrl: "",
+      menuId: "",
       menu: {
         name: "",
         kategorije: {
@@ -238,6 +323,7 @@ export default {
           ostalo: [],
         },
       },
+
       kategorije: {
         pice: "Alkoholna pića\nBezalkoholna pića\nGazirana Bezalkoholna pića\nKava\n",
         hrana: "Predjelo\nGlavno jelo\nDesert",

@@ -83,9 +83,8 @@ export default {
     register() {
       auth
         .signup(userCred)
-        .then((res) => {
-          console.log(res);
-          //this.$router.push("/login");
+        .then(() => {
+          this.$router.push("/login");
         })
         .catch((err) => {
           alert(err);

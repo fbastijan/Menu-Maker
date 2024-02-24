@@ -6,7 +6,8 @@
           <div class="card custom-card shadow" style="border-radius: 25px">
             <div class="card-body">
               <h1 class="card-title text-center mb-5">
-                Dobar Bar Menu (arhiva)
+                {{ arhiva.name }}
+                {{ applyDateFormatting(this.savedAt) }}
               </h1>
               <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -152,8 +153,9 @@
 </template>
 
 <script>
-import { kategorije, arhivirani } from "@/store";
+import { kategorije } from "@/store";
 import Subkategorije from "@/components/Subkategorije.vue";
+import { menuHandlers } from "@/Warehouse/menu";
 export default {
   name: "Home_view",
   components: {
@@ -161,9 +163,38 @@ export default {
   },
   data() {
     return {
-      items: arhivirani,
+      arhiva: {},
+      items: [],
+      savedAt: "",
       kategorije,
+      arhivaId: this.$route.params.id,
     };
+  },
+  methods: {
+    applyDateFormatting(dateString) {
+      let date = new Date(dateString);
+      return date.toLocaleDateString("hr-HR", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      });
+    },
+    async dohvatiArhivskeIteme() {
+      this.items = await menuHandlers.dohvatiItemeArhive(this.arhivaId);
+    },
+    async dohvatiArhivu() {
+      let result = await menuHandlers.dohvatiArhivuId(this.arhivaId);
+      this.savedAt = result.dateOfArchiving;
+      this.arhiva = result.menu;
+      this.kategorije = this.arhiva.kategorije;
+    },
+  },
+  mounted() {
+    this.dohvatiArhivskeIteme();
+    this.dohvatiArhivu();
   },
 };
 </script>

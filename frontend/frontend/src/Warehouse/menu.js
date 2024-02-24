@@ -36,7 +36,7 @@ const menuHandlers = {
         Authorization: splitHeader(),
       },
     };
-    console.log(menuItemChanges);
+
     let response = await Service.patch(
       `/api/menu/item/${itemId}`,
       { ...menuItemChanges },
@@ -81,7 +81,7 @@ const menuHandlers = {
       },
     };
     let response = await Service.get(`/api/user`, config);
-    console.log(response.data.user);
+
     return response.data.user;
   },
   getStorage() {
@@ -111,6 +111,22 @@ const menuHandlers = {
       return result.data.result;
     } catch (e) {
       return [];
+    }
+  },
+  async dohvatiItemeArhive(arhivaId) {
+    try {
+      let result = await Service.get(`api/arhiva/${arhivaId}/item`);
+      return result.data.result;
+    } catch (e) {
+      return [];
+    }
+  },
+  async dohvatiArhivuId(arhivaId) {
+    try {
+      let result = await Service.get(`api/arhiva/${arhivaId}`);
+      return result.data.result;
+    } catch (e) {
+      return {};
     }
   },
 };

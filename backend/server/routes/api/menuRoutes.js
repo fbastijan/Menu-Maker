@@ -221,7 +221,6 @@ router.post("/menu/item/:menuId", verifyToken, async (req, res) => {
       });
     });
 });
-router.post("/menu/:userId/backup", verifyToken, async (req, res) => {});
 
 //Updateanje Menu Itema
 router.patch("/menu/item/:itemId", verifyToken, async (req, res) => {
@@ -328,6 +327,7 @@ router.get(`/arhiva`, async (req, res) => {
 
       const items = await arhivaCollection
         .find()
+        .sort({ dateOfArchiving: -1 })
         .skip((pomPage - 1) * PAGE_SIZE)
         .limit(PAGE_SIZE)
         .toArray();
@@ -342,6 +342,65 @@ router.get(`/arhiva`, async (req, res) => {
         result: { items, hasNextPage, hasPrevPage },
       });
     } catch (e) {}
+  } catch (e) {
+    return res.status(500).json({
+      success: "false",
+      msg: "Dogodila se greška pri spajanju",
+      error: e,
+    });
+  }
+});
+
+router.get("/arhiva/:arhivaId", async (req, res) => {
+  try {
+    const db = await connectToMongoDB();
+    const arhivaCollection = db.collection("arhiva");
+    try {
+      let result = await arhivaCollection.findOne({
+        _id: new ObjectId(req.params.arhivaId),
+      });
+      return res.status(200).json({
+        success: "true",
+        msg: "pronašao si",
+        result: result,
+      });
+    } catch (e) {
+      return res.status(404).json({
+        success: "false",
+        msg: "Nisi pronašao",
+        error: e,
+      });
+    }
+  } catch (e) {
+    return res.status(500).json({
+      success: "false",
+      msg: "Dogodila se greška pri spajanju",
+      error: e,
+    });
+  }
+});
+router.get("/arhiva/:arhivaId/item", async (req, res) => {
+  try {
+    const db = await connectToMongoDB();
+    const arhivaItemsCollection = db.collection("arhivaItems");
+    try {
+      let result = await arhivaItemsCollection
+        .find({
+          arhivaId: req.params.arhivaId,
+        })
+        .toArray();
+      return res.status(200).json({
+        success: "true",
+        msg: "Pronašao si!",
+        result: result,
+      });
+    } catch (e) {
+      return res.status(404).json({
+        success: "false",
+        msg: "Nisi pronašao",
+        error: e,
+      });
+    }
   } catch (e) {
     return res.status(500).json({
       success: "false",

@@ -69,8 +69,8 @@ export default {
         .then(() => {
           this.$router.push("/menucreator");
         })
-        .catch((err) => {
-          alert("neispravan Username ili password", err);
+        .catch(() => {
+          alert("neispravan Username ili password");
         });
     },
   },

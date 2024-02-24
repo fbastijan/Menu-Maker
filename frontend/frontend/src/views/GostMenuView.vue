@@ -172,11 +172,10 @@ export default {
   methods: {
     async dohvatiSveIteme() {
       let res = await menuHandlers.getMenuItems(this.$route.params.id);
-      console.log(this.$route.params.id);
+
       this.items = res.data.menuItems;
       this.menu = res.data.menu.menu;
       this.kategorije = this.menu.kategorije;
-      console.log(JSON.stringify(this.menu));
     },
   },
 };
