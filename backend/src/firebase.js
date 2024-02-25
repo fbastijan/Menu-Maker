@@ -3,9 +3,10 @@ const { initializeApp } = require("firebase/app");
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 const { getStorage } = require("firebase/storage");
+require("dotenv").config();
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB6qBij1gOrvKivyXnlMjSLGt_Oz6qVm4U",
+  apiKey: process.env.firebase,
   authDomain: "testapp-53358.firebaseapp.com",
   projectId: "testapp-53358",
   storageBucket: "testapp-53358.appspot.com",
