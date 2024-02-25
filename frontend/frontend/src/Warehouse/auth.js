@@ -1,7 +1,7 @@
 import axios from "axios";
 import $router from "@/router";
 
-const baseURL = "http://localhost:3000/";
+const baseURL = "https://menu-maker-backend-1.onrender.com";
 let Service = axios.create({
   baseURL: baseURL,
   timeout: 10000000,

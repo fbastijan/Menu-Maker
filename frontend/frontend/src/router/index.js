@@ -49,10 +49,12 @@ router.beforeEach((to, from, next) => {
   // const introStranice = ["/", "/menucreator"];
   //const notIntro = !introStranice.includes(to.path);
   const loginPotreban = !javneStranice.includes(to.path);
+  const ends = to.path.endsWith("guest");
+
   let user = auth.getUser();
   //let menu = localStorage.getItem("menuId");
   flag.change();
-  if (loginPotreban && !user) {
+  if (loginPotreban && !user && !ends) {
     next("/login");
     return;
   }
