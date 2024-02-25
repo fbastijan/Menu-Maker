@@ -5,14 +5,13 @@
         <div class="col-9">
           <div class="card custom-card shadow" style="border-radius: 25px">
             <div class="card-body">
-              <h1 class="card-title text-center display-2">
-                Restaurant Menu Generator
-              </h1>
+              <h1 class="card-title text-center display-2">Menu Generator</h1>
               <p class="card-text display-5 m-5">
-                Welcome to our restaurant menu generator app. Create beautiful
-                and customized menus for your restaurant with ease. Use our
-                intuitive interface to add dishes, set prices, and showcase your
-                culinary offerings in style.
+                Dobrodošli u našu aplikaciju za generiranje jelovnika restorana.
+                Kreirajte prekrasne i prilagođene menije za svoj restoran s
+                lakoćom. Koristite naše intuitivno sučelje za dodavanje jela,
+                postavljanje cijena i prikazivanje svojih kulinarskih ponuda na
+                stilski način.
               </p>
               <router-link
                 to="/menucreator"

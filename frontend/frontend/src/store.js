@@ -1,6 +1,12 @@
 import { auth } from "./Warehouse/auth";
 export let items = [];
 export let paginated = {};
+export let logo = reactive({
+  url: "https://i.imgur.com/DFWAwnG_d.webp?maxwidth=760&fidelity=grand",
+  change(newUrl) {
+    this.url = newUrl;
+  },
+});
 
 export let arhivirani = [
   {

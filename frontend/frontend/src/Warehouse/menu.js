@@ -14,7 +14,7 @@ const menuHandlers = {
     return response;
   },
   async getMenuItems(menuId) {
-    let response = await Service.get(`/api/menu/item/${menuId}`);
+    let response = await Service.get(`/api/menu/${menuId}/item`);
     return response;
   },
   async setMenuItem(menuId, menuItem) {

@@ -8,30 +8,36 @@
               <h1 class="card-title text-center display-2">
                 Restaurant Menu Generator
               </h1>
-              <div class="form-floating mb-3 mx-3">
-                <input
-                  type="name"
-                  class="form-control"
-                  id="floatingInput"
-                  placeholder="name"
-                  v-model="menu.name"
-                />
-                <label for="floatingInput">Your Menu Name</label>
+              <div class="row align-items-center">
+                <div class="col">
+                  <img
+                    :src="
+                      imageLoading ? 'https://placehold.co/100' : imgDataUrl
+                    "
+                    @load="imageLoading = false"
+                    class="mx-auto d-flex"
+                    style="height: 100; width: 100"
+                  /><img />
+                  <button
+                    class="btn btn-sm btn-primary mx-auto d-flex mb-3"
+                    @click="toggleShow()"
+                  >
+                    Background
+                  </button>
+                </div>
+                <div class="col-8">
+                  <div class="form-floating mb-3 mx-3">
+                    <input
+                      type="name"
+                      class="form-control"
+                      id="floatingInput"
+                      placeholder="name"
+                      v-model="menu.name"
+                    />
+                    <label for="floatingInput">Your Menu Name</label>
+                  </div>
+                </div>
               </div>
-
-              <img
-                :src="imageLoading ? 'https://placehold.co/100' : imgDataUrl"
-                @load="imageLoading = false"
-                class="mx-auto d-flex"
-                style="height: 100; width: 100"
-              /><img />
-              <button
-                class="btn btn-sm btn-success mx-auto d-flex mb-3"
-                @click="toggleShow()"
-              >
-                set avatar
-              </button>
-
               <h3 class="card-title text-center mb-3">
                 Definiranje kategorija
               </h3>
@@ -163,8 +169,6 @@ Desert</textarea
         img-format="png"
         langType="en"
         :noCircle="true"
-        @crop-upload-success="cropUploadSuccess"
-        @crop-upload-fail="cropUploadFail"
       ></my-upload>
     </div>
   </div>
@@ -190,8 +194,12 @@ export default {
   },
   methods: {
     async dohvatiSliku() {
-      let res = await imageHandlers.dohvatiSliku(this.menuId);
-      this.imgDataUrl = res.data.result;
+      try {
+        let res = await imageHandlers.dohvatiSliku(this.menuId);
+        this.imgDataUrl = res.data.result;
+      } catch {
+        this.imgDataUrl = "https://placehold.co/100";
+      }
     },
     toggleShow() {
       this.show = !this.show;
@@ -277,37 +285,13 @@ export default {
     },
 
     async uploadImage() {
-      await imageHandlers.prenesiSliku(this.menuId, this.imgDataUrl);
+      await imageHandlers.prenesiSliku(this.imgDataUrl, this.menuId);
     },
-    async cropSuccess(imgDataUrl, field) {
-      console.log("-------- crop success --------", field);
+    async cropSuccess(imgDataUrl) {
       this.imgDataUrl = imgDataUrl;
-      console.log(this.imgDataUrl);
 
       await this.uploadImage();
     },
-    cropUploadSuccess(jsonData, field) {
-      console.log("-------- upload success --------");
-      console.log(jsonData);
-      console.log("field: " + field);
-    },
-    /**
-     * upload fail
-     *
-     * [param] status    server api return error status, like 500
-     * [param] field
-     */
-    cropUploadFail(status, field) {
-      console.log("-------- upload fail --------");
-      console.log(status);
-      console.log("field: " + field);
-    },
-    /**
-     * upload success
-     *
-     * [param] jsonData  server api return data, already json encode
-     * [param] field
-     */
   },
   data() {
     return {
@@ -315,6 +299,7 @@ export default {
       show: false,
       imgDataUrl: "",
       menuId: "",
+
       menu: {
         name: "",
         kategorije: {

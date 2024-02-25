@@ -109,7 +109,7 @@ router.delete("/menu/item/:itemId", verifyToken, async (req, res) => {
 });
 
 //dohvacanje svih item-a na menu
-router.get("/menu/item/:menuId", async (req, res) => {
+router.get("/menu/:menuId/item", async (req, res) => {
   try {
     const db = await connectToMongoDB();
     const itemsCollection = db.collection("menuItems");

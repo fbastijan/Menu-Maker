@@ -7,6 +7,7 @@ const { ref, uploadString, getDownloadURL } = require("firebase/storage");
 router.post("/image/upload", verifyToken, async (req, res) => {
   try {
     const storageRef = ref(storage, "images/" + req.body.menuId);
+
     const message4 = req.body.image;
     try {
       let result = await uploadString(storageRef, message4, "data_url").then(
@@ -24,7 +25,7 @@ router.post("/image/upload", verifyToken, async (req, res) => {
 });
 router.get("/image/download", async (req, res) => {
   try {
-    const storageRef = ref(storage, "images/" + req.query.id);
+    const storageRef = ref(storage, "images/" + req.query.menuId);
     let result = await getDownloadURL(storageRef);
     res.status(200).json({ result });
   } catch (e) {

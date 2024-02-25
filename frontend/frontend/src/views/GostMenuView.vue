@@ -154,6 +154,8 @@
 import Subkategorije from "@/components/Subkategorije.vue";
 import { menuHandlers } from "@/Warehouse/menu";
 import { kategorije } from "@/store";
+import { imageHandlers } from "@/Warehouse/images";
+import { logo } from "@/store";
 export default {
   name: "Home_view",
   components: {
@@ -168,8 +170,13 @@ export default {
   },
   mounted() {
     this.dohvatiSveIteme();
+    this.dohvatiBackground();
   },
   methods: {
+    async dohvatiBackground() {
+      let res = await imageHandlers.dohvatiSliku(this.$route.params.id);
+      logo.change(res.data.result);
+    },
     async dohvatiSveIteme() {
       let res = await menuHandlers.getMenuItems(this.$route.params.id);
 

@@ -4,30 +4,34 @@
       v-for="(item, index) in gridItems"
       :key="index"
       class="background-image"
-      :style="{ top: item.top, left: item.left }"
+      :style="{
+        top: item.top,
+        left: item.left,
+        backgroundImage: `url('${this.logo.url}')`,
+      }"
     ></div>
   </div>
 </template>
 
 <script>
+import { logo } from "@/store";
 export default {
   data() {
     return {
       gridItems: [],
       windowHeight: window.innerHeight,
+      logo,
     };
   },
   mounted() {
-    this.generateGrid(); // Generate grid on initial mount
+    this.generateGrid();
     window.addEventListener("resize", this.handleResize);
     window.addEventListener("scroll", this.handleScroll);
   },
   methods: {
     generateGrid() {
-      const smallImagePath =
-        "https://i.imgur.com/DFWAwnG_d.webp?maxwidth=760&fidelity=grand";
+      const smallImagePath = this.logo;
 
-      console.log();
       const numRows = Math.floor(document.documentElement.scrollHeight / 100);
       const numCols = Math.ceil(window.innerWidth / 100);
       const newGridItems = [];
@@ -55,6 +59,7 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener("scroll", this.handleScroll);
   },
 };
 </script>
@@ -80,6 +85,5 @@ body {
   background-size: cover;
   filter: grayscale(0.9);
   opacity: 0.3;
-  transform: rotate(45deg);
 }
 </style>

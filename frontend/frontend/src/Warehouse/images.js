@@ -5,8 +5,7 @@ let splitHeader = () => {
   return splitted;
 };
 const imageHandlers = {
-  async prenesiSliku(menuId, imageUrl) {
-    console.log(menuId, imageUrl);
+  async prenesiSliku(imageUrl, menuId) {
     try {
       const config = {
         headers: {
@@ -15,7 +14,7 @@ const imageHandlers = {
       };
       await Service.post(
         "api/image/upload",
-        { menuId: menuId, image: imageUrl },
+        { image: imageUrl, menuId: menuId },
         config
       );
     } catch (e) {
@@ -23,15 +22,20 @@ const imageHandlers = {
       return;
     }
   },
-  async dohvatiSliku(id) {
+  async dohvatiSliku(menuId) {
     let result = await Service.get(
       "/api/image/download",
 
       {
-        params: { id: id },
+        headers: {
+          Authorization: splitHeader(),
+        },
+        params: {
+          menuId: menuId,
+        },
       }
     );
-    console.log(id);
+
     return result;
   },
 };

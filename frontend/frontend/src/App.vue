@@ -32,7 +32,7 @@
 
           <div class="navbar-nav ms-auto">
             <a
-              class="nav-link active"
+              class="nav-link"
               aria-current="page"
               href="#"
               v-if="!authenticated.zast"
