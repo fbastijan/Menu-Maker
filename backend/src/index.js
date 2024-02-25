@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
 const serverless = require("serverless-http");
-const port = 3000;
+
 const router = express.Router();
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
