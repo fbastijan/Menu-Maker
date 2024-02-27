@@ -1,11 +1,17 @@
 <template>
   <div>
     <div class="container">
-      <div class="row justify-content-center mt-5">
-        <div class="col">
+      <div class="row mt-5">
+        <div class="col col-sm">
           <div class="card custom-card shadow" style="border-radius: 25px">
             <div class="card-body">
+              <img
+                :src="this.image"
+                class="rounded mx-auto d-block mb-3"
+                alt="..."
+              />
               <h1 class="card-title text-center mb-5">{{ this.menu.name }}</h1>
+
               <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                   <button
@@ -166,6 +172,7 @@ export default {
       menu: {},
       items: [],
       kategorije,
+      image: "",
     };
   },
   mounted() {
@@ -175,7 +182,8 @@ export default {
   methods: {
     async dohvatiBackground() {
       let res = await imageHandlers.dohvatiSliku(this.$route.params.id);
-      logo.change(res.data.result);
+      this.image = res.data.result;
+      logo.change(this.image);
     },
     async dohvatiSveIteme() {
       let res = await menuHandlers.getMenuItems(this.$route.params.id);

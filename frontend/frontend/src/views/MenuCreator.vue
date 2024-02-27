@@ -211,7 +211,7 @@ export default {
       this.menuId = pom._id;
       this.dohvatiSliku();
       let menu = pom.menu;
-      if (menu) localStorage.setItem("menu", JSON.stringify(menu));
+
       if (menu) this.menu = menu;
       if (menu) this.displayKategorije(menu);
     },

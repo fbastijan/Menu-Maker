@@ -262,8 +262,9 @@ export default {
     async unload() {
       await this.arhiviraj(this.menuId);
     },
-    menuInfo() {
-      let parsed = JSON.parse(menuHandlers.getStorage());
+    async menuInfo() {
+      let parsed = (await menuHandlers.getMenu()).data.menu.menu;
+      console.log(parsed);
       this.kategorije = parsed.kategorije;
       this.name = parsed.name;
     },
