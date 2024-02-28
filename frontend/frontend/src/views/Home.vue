@@ -17,7 +17,9 @@
                 to="/menucreator"
                 style="text-decoration: none; color: inherit"
               >
-                <a href="#" class="btn custom-btn btn-primary btn-lg m-5"
+                <a
+                  href="#"
+                  class="btn custom-btn btn-primary btn-lg m-5 float-end"
                   >Get started!</a
                 >
               </router-link>

@@ -8,7 +8,6 @@ require("dotenv").config();
 const tajna = process.env.SECRET;
 
 router.post("/register", async (req, res) => {
-  let name = req.body.name;
   let password = req.body.password;
   let email = req.body.email;
   let confirm_password = req.body.confirm_password;
@@ -41,7 +40,6 @@ router.post("/register", async (req, res) => {
     }
 
     let newUser = {
-      name: name,
       username: username,
       password: password,
       email: email,
@@ -89,7 +87,6 @@ router.get("/login", async (req, res) => {
         const payload = {
           _id: user._id,
           username: user.username,
-          name: user.name,
           email: user.email,
         };
         jwt.sign(payload, tajna, { expiresIn: 604800 }, (err, token) => {

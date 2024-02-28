@@ -149,7 +149,7 @@ Desert</textarea
 
               <a
                 href="#"
-                class="btn custom-btn btn-primary btn-lg m-5"
+                class="btn custom-btn btn-primary btn-lg m-5 float-end"
                 @click="finalize()"
                 >Završi</a
               >
