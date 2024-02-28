@@ -208,12 +208,15 @@ export default {
 
     async getMenu() {
       let pom = (await menuHandlers.getMenu()).data.menu;
-      this.menuId = pom._id;
-      this.dohvatiSliku();
-      let menu = pom.menu;
+      console.log(pom);
+      if (pom) {
+        this.menuId = pom._id;
+        this.dohvatiSliku();
+        let menu = pom.menu;
 
-      if (menu) this.menu = menu;
-      if (menu) this.displayKategorije(menu);
+        this.menu = menu;
+        this.displayKategorije(menu);
+      }
     },
     addKat(kat, gumb) {
       if (this.kategorije[kat])
@@ -223,7 +226,7 @@ export default {
     async finalize() {
       this.editKat();
       let res = await menuHandlers.setMenu(this.menu);
-
+      await this.uploadImage();
       localStorage.setItem("menuId", res.data.id);
       this.$router.push("/menu/" + res.data.id);
     },
@@ -289,15 +292,13 @@ export default {
     },
     async cropSuccess(imgDataUrl) {
       this.imgDataUrl = imgDataUrl;
-
-      await this.uploadImage();
     },
   },
   data() {
     return {
       imageLoading: true,
       show: false,
-      imgDataUrl: "",
+      imgDataUrl: "https://placehold.co/100",
       menuId: "",
 
       menu: {
