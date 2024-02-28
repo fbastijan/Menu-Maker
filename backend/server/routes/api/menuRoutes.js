@@ -309,8 +309,9 @@ router.post("/menu/:menuId/arhiva", verifyToken, async (req, res) => {
 });
 
 router.get(`/arhiva`, async (req, res) => {
-  let { pageNumber, menuId } = req.query;
-  let pomPage = parseInt(pageNumber);
+  let pageNumber = req.query.pageNumber;
+  let menuId = req.query.menuId;
+  let pomPage = parseInt(pageNumber) || 1;
   console.log(req.query);
   try {
     const db = await connectToMongoDB();
