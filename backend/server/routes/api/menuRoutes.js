@@ -317,7 +317,9 @@ router.get(`/arhiva`, async (req, res) => {
     const db = await connectToMongoDB();
     const arhivaCollection = db.collection("arhiva");
     try {
-      const totalItems = await arhivaCollection.countDocuments();
+      const totalItems = await arhivaCollection.countDocuments({
+        menuId: menuId,
+      });
       console.log(totalItems);
       const totalPages = Math.ceil(totalItems / PAGE_SIZE);
       if (pomPage < 1) {

@@ -90,8 +90,9 @@ export default {
     };
   },
   computed: {},
-  mounted() {
-    this.getPaginated(this.page);
+  async mounted() {
+    await this.getPaginated(this.page);
+    console.log(this.arhiva);
   },
   methods: {
     async getPaginated(page) {
@@ -104,7 +105,8 @@ export default {
       if (direction == "previous" && this.arhiva.hasPrevPage) {
         this.page = pageNumber - 1;
       }
-      this.arhiva = await menuHandlers.dohvatiArhivu(this.page);
+      this.arhiva = await menuHandlers.dohvatiArhivu(this.page, this.id);
+      console.log(this.arhiva);
     },
     applyDateFormatting(dateString) {
       let date = new Date(dateString);
