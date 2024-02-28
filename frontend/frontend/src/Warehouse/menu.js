@@ -97,13 +97,14 @@ const menuHandlers = {
     let response = await Service.post(`/api/menu/${menuId}/arhiva`, {}, config);
     return response;
   },
-  async dohvatiArhivu(stranica) {
+  async dohvatiArhivu(stranica, menuId) {
     try {
       let result = await Service.get(
         "/api/arhiva",
 
         {
           params: {
+            menuId: menuId,
             pageNumber: stranica,
           },
         }

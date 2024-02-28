@@ -208,7 +208,7 @@ export default {
 
     async getMenu() {
       let pom = (await menuHandlers.getMenu()).data.menu;
-      console.log(pom);
+
       if (pom) {
         this.menuId = pom._id;
         this.dohvatiSliku();
@@ -226,7 +226,8 @@ export default {
     async finalize() {
       this.editKat();
       let res = await menuHandlers.setMenu(this.menu);
-      await this.uploadImage();
+
+      await this.uploadImage(res.data.id);
       localStorage.setItem("menuId", res.data.id);
       this.$router.push("/menu/" + res.data.id);
     },
@@ -287,8 +288,8 @@ export default {
       this.kategorije.ostalo = this.kategorije.ostalo.replace(/\n+$/, "");
     },
 
-    async uploadImage() {
-      await imageHandlers.prenesiSliku(this.imgDataUrl, this.menuId);
+    async uploadImage(menuId) {
+      await imageHandlers.prenesiSliku(this.imgDataUrl, menuId);
     },
     async cropSuccess(imgDataUrl) {
       this.imgDataUrl = imgDataUrl;

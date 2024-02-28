@@ -309,7 +309,7 @@ router.post("/menu/:menuId/arhiva", verifyToken, async (req, res) => {
 });
 
 router.get(`/arhiva`, async (req, res) => {
-  let { pageNumber } = req.query;
+  let { pageNumber, menuId } = req.query;
   let pomPage = parseInt(pageNumber);
   console.log(req.query);
   try {
@@ -326,7 +326,7 @@ router.get(`/arhiva`, async (req, res) => {
       }
 
       const items = await arhivaCollection
-        .find()
+        .find({ menuId: menuId })
         .sort({ dateOfArchiving: -1 })
         .skip((pomPage - 1) * PAGE_SIZE)
         .limit(PAGE_SIZE)

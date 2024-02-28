@@ -15,14 +15,13 @@
                 Dodaj Stavku
               </button>
 
-              <router-link to="/menu/arhiva">
-                <button
-                  type="button"
-                  class="btn btn-primary mb-3 my-button ms-2"
-                >
-                  Arhiva
-                </button>
-              </router-link>
+              <button
+                type="button"
+                class="btn btn-primary mb-3 my-button ms-2"
+                @click="goArhiva()"
+              >
+                Arhiva
+              </button>
 
               <div class="row mb-3">
                 <div class="col-2">
@@ -259,6 +258,9 @@ export default {
   },
 
   methods: {
+    async goArhiva() {
+      this.$router.push("/menu/" + this.$route.params.id + "/arhiva");
+    },
     async unload() {
       await this.arhiviraj(this.menuId);
     },

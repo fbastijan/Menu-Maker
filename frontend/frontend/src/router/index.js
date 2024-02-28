@@ -22,7 +22,7 @@ const routes = [
     component: MenuEditor,
   },
   {
-    path: "/menu/arhiva", // :id is the dynamic part
+    path: "/menu/:id/arhiva", // :id is the dynamic part
 
     component: ArhivaView,
   },

@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       page: 1,
-
+      id: this.$route.params.id,
       arhiva: [],
     };
   },
@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     async getPaginated(page) {
-      this.arhiva = await menuHandlers.dohvatiArhivu(page);
+      this.arhiva = await menuHandlers.dohvatiArhivu(page, this.id);
     },
     async changePage(pageNumber, direction) {
       if (direction == "next" && this.arhiva.hasNextPage) {
