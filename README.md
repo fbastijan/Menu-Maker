@@ -8,11 +8,11 @@ Menu maker je aplikacija  koja služi za kreiranje  jelovnika restorana. Na jedn
 
 Naša aplikacija podržava 2 tipa korisnika: administratora i gosta u restoranu. Gost može jedino pregledavati cjenik tako da skenira generirani qr kod. Administrator je korisnik koji ima pravo kreiranja i uređivanja/izmjenjivanja  cjenika. Kreiranje cjenika uključuje  Dodavanje naziva i cijena stavkama, te definiranje kategorija koje nisu zadane sustavom. Sustav će se pobrinuti da za taj menu kreira QR  kod.  Arhiviranje cjenika se događa automatski kada korisnik mijenja menu  kako  bi  administrator  znao  kako  je  i  što  mijenjao  u  datom  trenutku. 
 
-![](Aspose.Words.885d4f4e-227d-48d1-b7da-0e9d92d26fad.001.jpeg)
+![alt text](https://imgur.com/a/BIFvWQ0)
 
 3. **UML - class dijagram** 
 
-![](Aspose.Words.885d4f4e-227d-48d1-b7da-0e9d92d26fad.002.jpeg)
+![alt text](https://imgur.com/lB3fkif)
 
 Aplikacija se sastoji  od klasa: vlasnik lokala, menu arhiva, arhivirane stavke i stavke menu.  
 
@@ -66,7 +66,7 @@ GET api/login-  ruta koja će u bazi  pronaći usera zadanog query parametrima, 
 
 Nakon što se korisnik  registra i ulogira pritiskom  na Get Started gumb korisnik dolazi na sljedeći screen: 
 
-![](Aspose.Words.885d4f4e-227d-48d1-b7da-0e9d92d26fad.003.jpeg)
+![alt text](https://imgur.com/lB3fkif)
 
 -Na ovom ekranu korisnik može promijeniti ime menu-a upisivanjem u polje.  
 
