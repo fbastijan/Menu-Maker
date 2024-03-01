@@ -66,7 +66,7 @@ GET api/login-  ruta koja će u bazi  pronaći usera zadanog query parametrima, 
 
 Nakon što se korisnik  registra i ulogira pritiskom  na Get Started gumb korisnik dolazi na sljedeći screen: 
 
-![alt text](https://imgur.com/lB3fkif)
+![alt text](https://i.imgur.com/MfjHHJD.png)
 
 -Na ovom ekranu korisnik može promijeniti ime menu-a upisivanjem u polje.  
 
@@ -75,7 +75,7 @@ Nakon što se korisnik  registra i ulogira pritiskom  na Get Started gumb korisn
 - kategorije po kojima će menu biti razvrstan mogu se dodavati upisivanjem u polje i pritiskom gumba dodaj ili dodavanjem u polje ispod u novi red 
 - pritiskom tipke završi dolazimo na drugi ekran. 
 
-![](Aspose.Words.885d4f4e-227d-48d1-b7da-0e9d92d26fad.004.jpeg)
+![](https://i.imgur.com/wQjOrBl.png)
 
 - Pritiskom na tipku dodaj stavku otvorit ćemo izbornik u kojem ćemo upisati stavke koje želimo dodati na menu. Ako upišemo stavku i stisnemo dodaj, ona će se dodati na listu promjena ispod, te promjene možemo potvrditi pritiskom na save changes 
 - Ako stisnemo na gumb arhiva, dobit ćemo listu spremljenih snapshotova menu-a, klikom na oko možemo vidjeti taj snapshot 
